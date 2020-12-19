@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">iCU</string>
+    <string name="splash_slogan">We guard. We Protect. We Secure</string>
+    <string name="login_message">Sign in to continue</string>
+    <string name="welcome">Welcome Back</string>
+    <string name="txt_password">Password</string>
+    <string name="txt_email">Email</string>
+    <string name="title_login">Sign In</string>
+    <string name="not_a_member_yet_sign_up">Not a member yet? Sign Up</string>
+    <string name="register_welcome">Sign Up</string>
+    <string name="register_message">All your security needs under one roof</string>
+    <string name="txt_fName">First Name</string>
+    <string name="txt_lName">Last Name</string>
+    <string name="txt_phone">Phone</string>
+    <string name="title_register">Sign up</string>
+    <string name="login">Already a member? Sign In</string>
+</resources>
