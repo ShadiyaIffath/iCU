@@ -69,6 +69,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //        } else {
 //            Toasty.error(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
 //        }
+        navigateToHome("Shadiya", "Iffath");
+    }
+
+    private void navigateToHome(String fName, String lName){
+        Toast.makeText(this, "Welcome " + fName + " " + lName,
+                Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        this.overridePendingTransition(0, 0);
     }
 
     private void navigateToRegister(){

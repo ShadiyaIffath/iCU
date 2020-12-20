@@ -26,7 +26,7 @@
         android:fontFamily="sans-serif-smallcaps"
         android:text="@string/register_welcome"
         android:textAllCaps="true"
-        android:textColor="@color/mahogany"
+        android:textColor="@color/dark"
         android:textSize="40sp"
         android:transitionName="logo_title" />
 
@@ -37,7 +37,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:transitionName="logo_slogan"
-        android:textColor="@color/brown"
+        android:textColor="@color/blue"
         android:textSize="20sp"
         android:text="@string/register_message" />
 

@@ -8,10 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="red_primary">#B22222</color>
-    <color name="dark">#343a40</color>
-    <color name="secondary">#918E80 </color>
-    <color name="beige">#F0EDE0</color>
-    <color name="brown">#433F30</color>
-    <color name="mahogany">#420D09</color>
+    <color name="blue_primary">#211778</color>
+    <color name="dark">#394867</color>
+    <color name="secondary">#BBBBBB </color>
+    <color name="beige">#FFE3D8</color>
+    <color name="blue">#5C6E91</color>
+    <color name="light_grey">#eeeded</color>
 </resources>
