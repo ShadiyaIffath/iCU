@@ -7,6 +7,6 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.iffath.icu.Fragment.HomeFragment"
-        android:label="fragment_home"
+        android:label="Home"
         tools:layout="@layout/fragment_home" />
 </navigation>
