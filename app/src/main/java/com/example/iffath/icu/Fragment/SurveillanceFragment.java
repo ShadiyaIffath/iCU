@@ -1,29 +1,48 @@
 package com.example.iffath.icu.Fragment;
 
-import android.app.ProgressDialog;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.VideoView;
+import android.widget.Toast;
 
 import com.example.iffath.icu.R;
+import com.google.android.material.textfield.TextInputLayout;
+
+import org.videolan.libvlc.LibVLC;
+import org.videolan.libvlc.Media;
+import org.videolan.libvlc.MediaPlayer;
+import org.videolan.libvlc.util.VLCVideoLayout;
+
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 import es.dmoral.toasty.Toasty;
 
-public class SurveillanceFragment extends Fragment implements View.OnClickListener {
-    VideoView video;
-    ProgressDialog mDialog;
-    ImageButton playBtn,pauseBtn,fullscreen_btn;
+public class SurveillanceFragment extends Fragment {
+    private static final boolean USE_TEXTURE_VIEW = false;
+    private static final boolean ENABLE_SUBTITLES = false;
 
-    String cameraIP;
+    String cameraIP= "rtsp://112.135.254.157:8080/h264_ulaw.sdp";
+
+    private VLCVideoLayout mVideoLayout = null;
+    TextInputLayout ipAddress;
+
+    private LibVLC mLibVLC = null;
+    private MediaPlayer mMediaPlayer = null;
+
+
     public SurveillanceFragment() {
         // Required empty public constructor
     }
@@ -32,73 +51,49 @@ public class SurveillanceFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_surveillance, container, false);
-        // Inflate the layout for this fragment
-        video = view.findViewById(R.id.surveillance_live);
-        playBtn = view.findViewById(R.id.play_btn);
-        pauseBtn = view.findViewById(R.id.pause_btn);
-        fullscreen_btn = view.findViewById(R.id.fullscreen_btn);
 
-        getIPAddress();
+        mVideoLayout = view.findViewById(R.id.surveillance_live);
+        ipAddress = view.findViewById(R.id.surveillance_ip);
 
-        playBtn.setOnClickListener(this);
+        final ArrayList<String> args = new ArrayList<>();
+        args.add("--vout=android-display");
+        args.add("-vvv");
+        mLibVLC = new LibVLC(getContext(), args);
+        mMediaPlayer = new MediaPlayer(mLibVLC);
+        ipAddress.getEditText().setText(cameraIP);
+
         return view;
     }
 
-    private void getIPAddress(){
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMediaPlayer.release();
+        mLibVLC.release();
     }
-
 
     @Override
-    public void onClick(View view) {
-        switch(view.getId()){
-            case R.id.play_btn:
-                playVideo();
-                break;
-            case R.id.pause_btn:
-                pauseVideo();
-                break;
-            case R.id.fullscreen_btn:
-                break;
+    public void onStart() {
+        super.onStart();
+
+        mMediaPlayer.attachViews(mVideoLayout, null, ENABLE_SUBTITLES, USE_TEXTURE_VIEW);
+
+        try {
+            final Media media = new Media(mLibVLC, Uri.parse(cameraIP));
+            mMediaPlayer.setMedia(media);
+            media.release();
+            mMediaPlayer.play();
+        } catch (Exception e) {
+            Toasty.error(getContext(),"An error occurred",Toasty.LENGTH_SHORT).show();
         }
     }
 
-    private void playVideo(){
-        mDialog = new ProgressDialog(getActivity());
-        mDialog.setMessage("Please wait...");
-        mDialog.setCanceledOnTouchOutside(false);
-        mDialog.show();
-
-        try{
-            Uri uri = Uri.parse(cameraIP);
-            video.setVideoURI(uri);
-            video.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    fullscreen_btn.setEnabled(true);
-                }
-            });
-        }catch (Exception ex){
-            mDialog.dismiss();
-            Toasty.error(getContext(),"An error Occurred!",Toasty.LENGTH_SHORT).show();
-            playBtn.setEnabled(false);
-            fullscreen_btn.setEnabled(false);
-        }
-        video.requestFocus();
-        video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                mDialog.dismiss();
-                mediaPlayer.setLooping(true);
-                playBtn.setEnabled(false);
-                playBtn.setVisibility(View.INVISIBLE);
-                pauseBtn.setVisibility(View.VISIBLE);
-                video.start();
-            }
-        });
+    @Override
+    public void onStop() {
+        super.onStop();
+        mMediaPlayer.stop();
+        mMediaPlayer.detachViews();
     }
 
-    private void pauseVideo(){
-        video.pause();
-    }
+
 }

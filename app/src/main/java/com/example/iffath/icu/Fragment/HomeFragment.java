@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.work.Logger;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,11 @@ import com.example.iffath.icu.R;
 import com.google.android.material.button.MaterialButton;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+
 import es.dmoral.toasty.Toasty;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
@@ -28,9 +34,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     TextView contact_count,camera_error,alert_count;
     ImageView connected;
     View v;
-
-    String cameraIP= "";
-    boolean connectionStatus = true;
+    int port = -1;
+    String ipAddress = "";
+    String cameraIP= "rtsp://112.135.254.157:8080/video";
+    boolean connectionStatus = false;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -48,17 +55,54 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         connected = view.findViewById(R.id.home_camera_indicator);
         contact_count = view.findViewById(R.id.home_contacts_count);
         alert_count = view.findViewById(R.id.home_alert_count);
-        getIPAddress();
+        viewLiveBtn.setEnabled(false);
+
+        extractPortAndIP();
+        validateIP();
 
         viewLiveBtn.setOnClickListener(this);
         return view;
     }
 
-    private void validateIP(){
-        //TODO: get ip address from preference manager
+    private void validateIP() {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Socket socket = new Socket();
+                    socket.connect(new InetSocketAddress(ipAddress, port), 1000);
+                    socket.close();
+                    connectionStatus = true;
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    connectionStatus = false;
+                }
+            }
+        });
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            setErrorMessage();
+        }
     }
 
-    private void getIPAddress(){
+    private void extractPortAndIP(){
+        if(cameraIP!=null) {
+            port = Integer.parseInt(cameraIP.substring(cameraIP.lastIndexOf(":") + 1, cameraIP.lastIndexOf("/")));
+            if (cameraIP.contains("@")) {
+                ipAddress = cameraIP.substring(cameraIP.indexOf("@")+1, cameraIP.lastIndexOf(":"));
+            } else {
+                ipAddress = cameraIP.substring(7, cameraIP.lastIndexOf(":"));
+            }
+        }
+
+    }
+
+    private void setErrorMessage(){
+        viewLiveBtn.setEnabled(true);
         if(cameraIP==null) {
             camera_error.setText("You have not configured your IP camera to view surveillance. Please setup your device so we can help you");
         }else if(!connectionStatus){

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="15dp"
+    android:keepScreenOn="true"
     android:background="@drawable/main_header_gradient"
     tools:context=".Fragment.SurveillanceFragment">
 
@@ -36,61 +37,12 @@
             android:textAlignment="center" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <VideoView
+    <org.videolan.libvlc.util.VLCVideoLayout
         android:id="@+id/surveillance_live"
+        android:layout_below="@id/surveillance_ip"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_below="@id/surveillance_ip"/>
-    <RelativeLayout
-        android:layout_below="@id/surveillance_live"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:background="@color/black">
-        <ImageButton
-            android:id="@+id/play_btn"
-            android:src="@drawable/play"
-            android:layout_centerHorizontal="true"
-            android:background="@color/black"
-            android:tint="@color/white"
-            android:focusableInTouchMode="true"
-            android:layout_width="45dp"
-            android:layout_height="45dp"/>
+        android:layout_height="500dp"
+        android:fitsSystemWindows="false"/>
 
-        <ImageButton
-            android:id="@+id/pause_btn"
-            android:src="@drawable/pause"
-            android:layout_centerHorizontal="true"
-            android:background="@color/black"
-            android:tint="@color/white"
-            android:focusableInTouchMode="true"
-            android:visibility="invisible"
-            android:layout_width="45dp"
-            android:layout_height="45dp"/>
-
-        <ImageButton
-            android:id="@+id/fullscreen_btn"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/full_screen"
-            android:background="@color/black"
-            android:tint="@color/white"
-            android:focusableInTouchMode="true"
-            android:layout_width="45dp"
-            android:layout_height="45dp"/>
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/home_error"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/surveillance_live"
-        android:layout_marginTop="70dp"
-        android:textColor="@color/blue_primary"
-        android:text="We are connecting you with your device expect a short lag in the rendered video since this is live."
-        android:textAlignment="center" />
 
 </RelativeLayout>

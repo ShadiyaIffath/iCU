@@ -20,4 +20,8 @@
         android:name="com.example.iffath.icu.Fragment.SurveillanceFragment"
         android:label="Surveillance"
         tools:layout="@layout/fragment_surveillance" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.iffath.icu.Fragment.ProfileFragment"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
