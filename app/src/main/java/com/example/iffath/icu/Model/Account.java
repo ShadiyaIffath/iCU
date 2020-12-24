@@ -16,19 +16,15 @@ public class Account {
     private String email;
     private String password;
     private String token;
-    private boolean active;
     private int phone;
-    private String type;
 
-    public Account(int id, String firstName, String lastName, String email, String password, int phone, String type) {
+    public Account(int id, String firstName, String lastName, String email, String password, int phone) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.active = true;
         this.phone = phone;
-        this.type = type;
     }
 
     public Account(String firstName, String lastName, String email, String password, int phone) {
@@ -37,6 +33,5 @@ public class Account {
         this.email = email;
         this.password = password;
         this.phone = phone;
-        this.active = true;
     }
 }

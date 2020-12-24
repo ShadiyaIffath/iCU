@@ -21,7 +21,8 @@
         android:label="Surveillance"
         tools:layout="@layout/fragment_surveillance" />
     <fragment
-        android:id="@+id/profileFragment"
+        android:id="@+id/navigation_profile"
         android:name="com.example.iffath.icu.Fragment.ProfileFragment"
+        android:label="Profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>
