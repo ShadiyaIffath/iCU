@@ -1,8 +1,9 @@
-package com.example.iffath.icu.storage;
+package com.example.iffath.icu.Storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.iffath.icu.DTO.Response.LoginResponse;
 import com.example.iffath.icu.Model.Account;
 import com.example.iffath.icu.R;
 
@@ -23,6 +24,18 @@ public class SharedPreferenceManager {
         return sharedPreferenceManagerInstance;
     }
 
+    public void StoreAccountDetails(LoginResponse account){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Key_Preferences, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("id", account.getId());
+        editor.putString("firstName", account.getFirst_name());
+        editor.putString("lastName", account.getLast_name());
+        editor.putString("email", account.getEmail());
+        editor.putInt("phone", account.getPhone());
+        editor.putString("password", account.getPassword());
+        editor.apply();
+    }
+
     public Account GetAccount(){
         SharedPreferences sharedPreferences = context.getSharedPreferences(Key_Preferences, Context.MODE_PRIVATE);
         int id = sharedPreferences.getInt("id", -1);
@@ -31,14 +44,21 @@ public class SharedPreferenceManager {
         int number = sharedPreferences.getInt("phone", -1);
         String mail = sharedPreferences.getString("email", "");
         String password = sharedPreferences.getString("password", "");
-        String role = sharedPreferences.getString("role", "ROLE_USER");
-        return new Account(id,fName,lName,mail,password,"",true,number,role);
+        return new Account(id,fName,lName,mail,password,number);
+    }
+
+    public String GetAccountName(){
+        String fullname,name = "";
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Key_Preferences, Context.MODE_PRIVATE);
+        name = sharedPreferences.getString("firstName", name);
+        fullname = name+" ";
+        name = sharedPreferences.getString("lastName", name);
+        fullname += name;
+        return fullname;
     }
 
     public boolean isLoggedIn() {
         SharedPreferences sharedPreferences = context.getSharedPreferences(Key_Preferences, Context.MODE_PRIVATE);
-        int id = 0;
-        id = sharedPreferences.getInt("id", -1);
         if (sharedPreferences.getInt("id", -1) != -1) {
             return true;
         }

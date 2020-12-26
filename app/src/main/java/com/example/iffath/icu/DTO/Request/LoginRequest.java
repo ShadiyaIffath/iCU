@@ -1,4 +1,4 @@
-package com.example.iffath.icu.DTO;
+package com.example.iffath.icu.DTO.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

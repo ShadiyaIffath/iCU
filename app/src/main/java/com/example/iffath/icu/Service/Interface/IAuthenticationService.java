@@ -1,7 +1,8 @@
 package com.example.iffath.icu.Service.Interface;
 
-import com.example.iffath.icu.DTO.LoginRequest;
-import com.example.iffath.icu.DTO.LoginResponse;
+import com.example.iffath.icu.DTO.Request.LoginRequest;
+import com.example.iffath.icu.DTO.Request.RegisterRequest;
+import com.example.iffath.icu.DTO.Response.LoginResponse;
 import com.example.iffath.icu.Model.Account;
 
 import retrofit2.Call;
@@ -13,5 +14,5 @@ public interface IAuthenticationService {
     Call<LoginResponse> loginUser(@Body LoginRequest loginRequest);
 
     @POST("signUp")
-    Call<LoginResponse> registerUser(@Body Account account);
+    Call<LoginResponse> registerUser(@Body RegisterRequest registerRequest);
 }

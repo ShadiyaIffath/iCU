@@ -1,5 +1,8 @@
 package com.example.iffath.icu.Callback;
 
+import com.example.iffath.icu.DTO.Response.MessageResponse;
+import com.google.gson.Gson;
+
 import java.io.IOException;
 
 import retrofit2.Call;
@@ -18,8 +21,8 @@ public class CustomizeCallback<T> implements Callback<T> {
         if(!response.isSuccessful() && response.errorBody() != null){
             String error = null;
             try{
-//                error = new Gson().fromJson(response.errorBody().string(), MessageResponse.class).getMessageResponse();
-                error = response.errorBody().string();
+                error = new Gson().fromJson(response.errorBody().string(), MessageResponse.class).getCode();
+//                error = response.errorBody().string();
             }catch (IOException e) {
                 e.printStackTrace();
             }

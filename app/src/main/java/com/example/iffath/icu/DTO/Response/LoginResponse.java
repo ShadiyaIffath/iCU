@@ -1,4 +1,4 @@
-package com.example.iffath.icu.DTO;
+package com.example.iffath.icu.DTO.Response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,10 +11,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class LoginResponse {
     private int id;
-    private String firstName;
-    private String lastName;
+    private String first_name;
+    private String last_name;
     private String email;
     private String password;
     private int phone;
-    private String type;
 }

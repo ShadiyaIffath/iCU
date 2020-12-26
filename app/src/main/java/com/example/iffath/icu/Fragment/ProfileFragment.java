@@ -8,11 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.iffath.icu.Model.Account;
 import com.example.iffath.icu.R;
-import com.example.iffath.icu.storage.SharedPreferenceManager;
+import com.example.iffath.icu.Storage.SharedPreferenceManager;
 import com.google.android.material.textfield.TextInputLayout;
 
 import es.dmoral.toasty.Toasty;
@@ -21,6 +22,7 @@ import es.dmoral.toasty.Toasty;
 public class ProfileFragment extends Fragment implements View.OnClickListener {
     TextInputLayout profile_firstName, profile_lastName, profile_email, profile_phone, profile_new_password;
     Button btnProfile;
+    TextView profile_title;
 
     SharedPreferenceManager preferenceManager;
     Account account,editAccount;
@@ -39,6 +41,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         preferenceManager = SharedPreferenceManager.getInstance(getContext());
         account = preferenceManager.GetAccount();
         //hooks
+        profile_title = view.findViewById(R.id.profile_title);
         profile_firstName = view.findViewById(R.id.profile_firstName);
         profile_lastName = view.findViewById(R.id.profile_lastName);
         profile_email = view.findViewById(R.id.profile_email);
@@ -46,8 +49,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         profile_new_password = view.findViewById(R.id.profile_new_password);
         btnProfile = view.findViewById(R.id.btnProfile);
 
-        profile_firstName.getEditText().setText(account.getFirstName());
-        profile_lastName.getEditText().setText(account.getLastName());
+        String full_name = account.getFirst_name()+ " " +account.getLast_name();
+        profile_title.setText(full_name);
+        profile_firstName.getEditText().setText(account.getFirst_name());
+        profile_lastName.getEditText().setText(account.getLast_name());
         profile_email.getEditText().setText(account.getEmail());
         profile_phone.getEditText().setText(String.valueOf(account.getPhone()));
 
@@ -78,7 +83,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             }
             Toasty.error(getContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
         } else {
-            editAccount = new Account(account.getId(), fName,lName,account.getEmail(),account.getPassword(), Integer.parseInt(phone), account.getType());
+            editAccount = new Account(account.getId(), fName,lName,account.getEmail(),account.getPassword(), Integer.parseInt(phone));
             if(!password.isEmpty() || !email.equals(account.getEmail())){
                 editAccount.setPassword(password);
                 editAccount.setEmail(email);

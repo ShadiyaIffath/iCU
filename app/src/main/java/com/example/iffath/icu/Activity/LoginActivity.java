@@ -13,19 +13,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.iffath.icu.Callback.ResponseCallback;
+import com.example.iffath.icu.DTO.Request.LoginRequest;
+import com.example.iffath.icu.DTO.Response.LoginResponse;
 import com.example.iffath.icu.R;
+import com.example.iffath.icu.Service.AuthenticationService;
+import com.example.iffath.icu.Storage.SharedPreferenceManager;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+import es.dmoral.toasty.Toasty;
+import retrofit2.Response;
+
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, ResponseCallback {
     TextInputLayout email,password;
     ImageView splash;
     TextView logo, slogan;
     Button signIn, callRegister;
+
+    AuthenticationService authenticationService;
+    SharedPreferenceManager preferenceManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
+        authenticationService = new AuthenticationService();
 
         //hooks
         splash = findViewById(R.id.login_image);
@@ -51,6 +63,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    @Override
+    public void onSuccess(Response response) {
+        LoginResponse loginResponse = (LoginResponse) response.body();
+        if(loginResponse != null) {
+            storeLoggedInUser(loginResponse);
+            navigateToHome(loginResponse.getFirst_name(),loginResponse.getLast_name());
+        }
+    }
+
+    @Override
+    public void onError(String errorMessage) {
+        if(errorMessage.equals("ICU001")) {
+            Toasty.error(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+        }else{
+            Toasty.error(this, "Server error. Try again later", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void SignIn() {
         String mail = email.getEditText().getText().toString();
         String pw = password.getEditText().getText().toString();
@@ -63,13 +93,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             valid = false;
             password.setError("Password cannot be blank");
         }
-//        if (valid) {
-//            LoginRequest loginRequest = new LoginRequest(mail, pw);
-//            authenticationService.login(loginRequest, this);
-//        } else {
-//            Toasty.error(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
-//        }
-        navigateToHome("Shadiya", "Iffath");
+        if (valid) {
+            LoginRequest loginRequest = new LoginRequest(mail, pw);
+            authenticationService.login(loginRequest, this);
+        } else {
+            Toasty.error(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void navigateToHome(String fName, String lName){
@@ -98,5 +127,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent,options.toBundle());
         }
+    }
+
+    private void storeLoggedInUser(LoginResponse response){
+        // inside of an Activity, `getString` is called directly
+        preferenceManager = SharedPreferenceManager.getInstance(this);
+        preferenceManager.StoreAccountDetails(response);
     }
 }

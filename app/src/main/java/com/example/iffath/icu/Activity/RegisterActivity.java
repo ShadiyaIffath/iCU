@@ -13,16 +13,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.iffath.icu.Callback.ResponseCallback;
+import com.example.iffath.icu.DTO.Request.RegisterRequest;
+import com.example.iffath.icu.DTO.Response.LoginResponse;
+import com.example.iffath.icu.Model.Account;
 import com.example.iffath.icu.R;
-import com.example.iffath.icu.storage.SharedPreferenceManager;
+import com.example.iffath.icu.Service.AuthenticationService;
+import com.example.iffath.icu.Storage.SharedPreferenceManager;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
+import es.dmoral.toasty.Toasty;
+import retrofit2.Response;
+
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, ResponseCallback {
     TextInputLayout firstName,lastName,email,passTxt, numberTxt;
     ImageView splash;
     TextView logo, slogan;
     Button callSignIn, register;
+
+    RegisterRequest account;
     SharedPreferenceManager preferenceManager;
+    AuthenticationService authenticationService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +53,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         callSignIn = findViewById(R.id.btnGetLoggedIn);
         register.setOnClickListener(this);
         callSignIn.setOnClickListener(this);
+
+        authenticationService = new AuthenticationService();
     }
 
     @Override
@@ -55,6 +68,25 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onSuccess(Response response) {
+        LoginResponse loginResponse = (LoginResponse) response.body();
+        if(loginResponse != null) {
+            storeRegisteredUser(loginResponse);
+            navigateToHome(loginResponse.getFirst_name(),loginResponse.getLast_name());
+        }
+    }
+
+    @Override
+    public void onError(String errorMessage) {
+        if(errorMessage.equals("ICU002")) {
+            Toasty.error(this, "E-mail is in use", Toast.LENGTH_SHORT).show();
+            email.setError("E-mail is already used");
+        }else{
+            Toasty.error(this, "Registration failed, try again later", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -81,10 +113,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             if (number.isEmpty()) {
                 numberTxt.setError("Contact number cannot be blank");
             }
-//            Toasty.error(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+            Toasty.error(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
         } else {
-//            account = new Account(fName, lName, mail , password, Integer.parseInt(number));
-//            authenticationService.register(account,this);
+            account = new RegisterRequest(fName, lName, mail , password, Integer.parseInt(number));
+            authenticationService.register(account,this);
         }
     }
 
@@ -115,6 +147,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent,options.toBundle());
         }
+    }
+
+    private void storeRegisteredUser(LoginResponse response){
+        preferenceManager = SharedPreferenceManager.getInstance(this);
+        preferenceManager.StoreAccountDetails(response);
     }
 
 }

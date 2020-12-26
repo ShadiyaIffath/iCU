@@ -13,8 +13,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.iffath.icu.R;
+import com.example.iffath.icu.Storage.SharedPreferenceManager;
 
 public class SplashActivity extends AppCompatActivity {
     private static int SPLASH_DURATION = 3000;
@@ -22,6 +24,8 @@ public class SplashActivity extends AppCompatActivity {
     ImageView splash;
     TextView logo, slogan;
     Intent intent;
+
+    SharedPreferenceManager preferenceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,16 @@ public class SplashActivity extends AppCompatActivity {
         logo.setAnimation(bottomAnime);
         slogan.setAnimation(bottomAnime);
 
+        preferenceManager = SharedPreferenceManager.getInstance( this);
+        boolean isLogged = preferenceManager.isLoggedIn();
+        if (isLogged) {
+            navigateToHome();
+        }else{
+            navigateToLogin();
+        }
+    }
 
+    private void navigateToLogin(){
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -59,6 +72,18 @@ public class SplashActivity extends AppCompatActivity {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent, options.toBundle());
                 }
+            }
+        }, SPLASH_DURATION);
+    }
+
+    private void navigateToHome(){
+        String name = preferenceManager.GetAccountName();
+        Toast.makeText(this, "Welcome " + name,  Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                intent = new Intent(SplashActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         }, SPLASH_DURATION);
     }

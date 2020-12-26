@@ -25,4 +25,9 @@
         android:name="com.example.iffath.icu.Fragment.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/navigation_contacts"
+        android:name="com.example.iffath.icu.Fragment.EmergencyContactsFragment"
+        android:label="@string/emergency_contact"
+        tools:layout="@layout/fragment_emergency_contacts" />
 </navigation>

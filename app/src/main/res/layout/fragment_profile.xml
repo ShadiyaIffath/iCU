@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingTop="15dp"
+    android:paddingTop="20dp"
+    android:background="@drawable/main_header_gradient"
     tools:context=".Fragment.ProfileFragment">
 
 
@@ -15,7 +16,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/blue"
+            android:backgroundTint="@color/light_grey"
             app:cardCornerRadius="15dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="25dp"
@@ -29,23 +30,23 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:fontFamily="@font/aladin"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:textSize="38sp"
                 android:textColor="@color/black"
-                android:text="@string/profile" />
+                android:text="Shadiya Iffath" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="17dp"
             android:layout_marginTop="60dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="17dp"
             android:background="@color/white">
 
             <ImageView
                 android:id="@+id/profile_image"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="20dp"
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/proimg"
                 android:layout_width="wrap_content"
@@ -162,7 +163,7 @@
                 android:textColor="@color/blue"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="55dp"
-                android:layout_marginBottom="55dp"
+                android:layout_marginBottom="30dp"
                 android:layout_marginEnd="55dp"
                 android:layout_gravity="center"
                 android:id="@+id/btnProfile"

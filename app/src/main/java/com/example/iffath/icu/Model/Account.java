@@ -11,25 +11,15 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Account {
     private int id;
-    private String firstName;
-    private String lastName;
+    private String first_name;
+    private String last_name;
     private String email;
     private String password;
-    private String token;
     private int phone;
 
-    public Account(int id, String firstName, String lastName, String email, String password, int phone) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-    }
-
-    public Account(String firstName, String lastName, String email, String password, int phone) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Account(String first_name, String last_name, String email, String password, int phone) {
+        this.first_name = first_name;
+        this.last_name = last_name;
         this.email = email;
         this.password = password;
         this.phone = phone;

@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.iffath.icu.R;
-import com.example.iffath.icu.storage.SharedPreferenceManager;
+import com.example.iffath.icu.Storage.SharedPreferenceManager;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
@@ -39,7 +39,10 @@ public class MainActivity extends AppCompatActivity {
         View navigationHeader = this.navigationView.getHeaderView(0);
         nameTxt = navigationHeader.findViewById(R.id.logged_user);
 
-        nameTxt.setText("Shadiya Iffath");
+        //get logged in users name
+        preferenceManager = SharedPreferenceManager.getInstance( this);
+        name = preferenceManager.GetAccountName();
+        nameTxt.setText(name);
 
         // The custom toolbar replaces the action bar
         setSupportActionBar(toolbar);
