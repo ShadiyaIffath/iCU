@@ -27,7 +27,32 @@
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/navigation_contacts"
-        android:name="com.example.iffath.icu.Fragment.EmergencyContactsFragment"
+        android:name="com.example.iffath.icu.Fragment.ManageContactsFragment"
         android:label="@string/emergency_contact"
-        tools:layout="@layout/fragment_emergency_contacts" />
+        tools:layout="@layout/fragment_manage_contacts" >
+        <action
+            android:id="@+id/action_navigation_contacts_to_emergencyContactFragment"
+            app:destination="@id/emergencyContactFragment"
+            app:enterAnim="@anim/top_animation"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/emergencyContactFragment"
+        android:name="com.example.iffath.icu.Fragment.EmergencyContactFragment"
+        tools:layout="@layout/fragment_emergency_contact">
+        <action
+            android:id="@+id/action_emergencyContactFragment_to_navigation_contacts"
+            app:destination="@id/navigation_contacts"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@anim/bottom_down_animation"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="Contact"
+            app:argType="com.example.iffath.icu.Model.EmergencyContact"
+            app:nullable="true" />
+        <argument
+            android:name="isEdit"
+            app:argType="boolean" />
+    </fragment>
 </navigation>

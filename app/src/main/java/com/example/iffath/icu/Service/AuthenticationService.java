@@ -12,7 +12,7 @@ import com.example.iffath.icu.Service.Interface.IAuthenticationService;
 import retrofit2.Call;
 
 public class AuthenticationService {
-    com.example.iffath.icu.Service.Interface.IAuthenticationService IAuthenticationService;
+    IAuthenticationService IAuthenticationService;
 
     public AuthenticationService() {
         this.IAuthenticationService = RetrofitClient.getRetrofitClientInstance().create(IAuthenticationService.class);

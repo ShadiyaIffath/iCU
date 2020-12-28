@@ -11,7 +11,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    private static String BASE_URL = "http://82f441518aec.ngrok.io/"; //This value will change depending on the connection
+    private static String BASE_URL = "http://be9dc7136c1c.ngrok.io/"; //This value will change depending on the connection
     private static Retrofit retrofit;
 
     public RetrofitClient() {

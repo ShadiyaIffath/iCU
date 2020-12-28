@@ -23,7 +23,8 @@ public class CustomizeCallback<T> implements Callback<T> {
             try{
                 error = new Gson().fromJson(response.errorBody().string(), MessageResponse.class).getCode();
 //                error = response.errorBody().string();
-            }catch (IOException e) {
+            }catch (Exception e) {
+                error = "Error converting response "+ e.getMessage();
                 e.printStackTrace();
             }
             System.out.println("Customize callback not successful "+error);

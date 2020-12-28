@@ -3,6 +3,7 @@ package com.example.iffath.icu.Storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.iffath.icu.DTO.Request.AccountUpdateRequest;
 import com.example.iffath.icu.DTO.Response.LoginResponse;
 import com.example.iffath.icu.Model.Account;
 import com.example.iffath.icu.R;
@@ -57,12 +58,27 @@ public class SharedPreferenceManager {
         return fullname;
     }
 
-    public boolean isLoggedIn() {
+    public int getLoggedInUserId(){
         SharedPreferences sharedPreferences = context.getSharedPreferences(Key_Preferences, Context.MODE_PRIVATE);
-        if (sharedPreferences.getInt("id", -1) != -1) {
+        return sharedPreferences.getInt("id", -1);
+    }
+
+    public boolean isLoggedIn() {
+        if (getLoggedInUserId() != -1) {
             return true;
         }
         return false;
+    }
+
+    public void updateAccount(AccountUpdateRequest account){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Key_Preferences, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("firstName", account.getFirst_name());
+        editor.putString("lastName", account.getLast_name());
+        editor.putString("email", account.getEmail());
+        editor.putInt("phone", account.getPhone());
+        editor.putString("password", account.getPassword());
+        editor.apply();
     }
 
     public void clear() {

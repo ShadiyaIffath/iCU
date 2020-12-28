@@ -31,4 +31,8 @@
     <string name="burglar_alerts_count">Number of people we alert for you</string>
     <string name="view_surveillance">View Surveillance</string>
     <string name="confirm_changes">Confirm Changes</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="nickname">Nickname</string>
+    <string name="name">Name</string>
 </resources>

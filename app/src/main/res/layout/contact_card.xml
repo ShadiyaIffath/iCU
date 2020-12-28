@@ -21,6 +21,17 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/contact_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="cousin"
+            android:textColor="@color/secondary"
+            android:fontFamily="@font/aladin"
+            android:textSize="24sp"
+            android:layout_toEndOf="@id/contact_name"/>
+
     <ImageView
         android:id="@+id/phone_image"
         android:layout_width="wrap_content"
@@ -30,6 +41,7 @@
         android:src="@drawable/phone"/>
 
         <TextView
+            android:id="@+id/contact_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -47,6 +59,7 @@
         android:background="@drawable/email_icon"/>
 
         <TextView
+            android:id="@+id/contact_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="shadiya.iffath98@gmail.com"
