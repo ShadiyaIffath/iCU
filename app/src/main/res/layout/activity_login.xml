@@ -28,7 +28,7 @@
         android:fontFamily="sans-serif-smallcaps"
         android:text="@string/welcome"
         android:textAllCaps="true"
-        android:textColor="@color/dark"
+        android:textColor="@color/darker_blue"
         android:textSize="40sp"
         android:transitionName="logo_title" />
 
@@ -40,7 +40,7 @@
         android:layout_marginEnd="20dp"
         android:transitionName="logo_slogan"
         android:textSize="20sp"
-        android:textColor="@color/blue_primary"
+        android:textColor="@color/grey"
         android:text="@string/login_message" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -88,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:elevation="0dp"
-            android:textColor="@color/white"
+            android:textColor="@color/light_beige"
             android:layout_marginTop="20dp"
             android:layout_gravity="center"
             android:id="@+id/btnLogin"

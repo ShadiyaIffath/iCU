@@ -55,4 +55,9 @@
             android:name="isEdit"
             app:argType="boolean" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_devices"
+        android:name="com.example.iffath.icu.Fragment.DeviceFragment"
+        android:label="IP Camera"
+        tools:layout="@layout/fragment_device" />
 </navigation>
