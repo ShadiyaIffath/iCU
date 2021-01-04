@@ -48,7 +48,7 @@ public class SplashActivity extends AppCompatActivity {
         slogan.setAnimation(bottomAnime);
 
         preferenceManager = SharedPreferenceManager.getInstance( this);
-        boolean isLogged = preferenceManager.isLoggedIn();
+        boolean isLogged = preferenceManager.IsLoggedIn();
         if (isLogged) {
             navigateToHome();
         }else{

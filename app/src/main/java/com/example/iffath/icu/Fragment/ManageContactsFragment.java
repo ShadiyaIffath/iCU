@@ -54,7 +54,7 @@ public class ManageContactsFragment extends Fragment implements View.OnClickList
         view =  inflater.inflate(R.layout.fragment_manage_contacts, container, false);
         contactsService = new ContactsService();
         preferenceManager = SharedPreferenceManager.getInstance(this.getContext());
-        accountId = preferenceManager.getLoggedInUserId();
+        accountId = preferenceManager.GetLoggedInUserId();
         contacts = new ArrayList<>();
         createCallBacks();
 

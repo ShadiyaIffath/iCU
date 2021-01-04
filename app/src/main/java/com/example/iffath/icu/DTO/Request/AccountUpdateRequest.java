@@ -13,6 +13,7 @@ public class AccountUpdateRequest {
     private String first_name;
     private String last_name;
     private String email;
+    private String address;
     private String password;
     private int phone;
 }

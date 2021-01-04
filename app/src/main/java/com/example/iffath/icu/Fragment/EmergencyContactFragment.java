@@ -3,7 +3,6 @@ package com.example.iffath.icu.Fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
@@ -49,7 +48,7 @@ public class EmergencyContactFragment extends Fragment implements View.OnClickLi
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_emergency_contact, container, false);
         preferenceManager = SharedPreferenceManager.getInstance(this.getContext());
-        accountId = preferenceManager.getLoggedInUserId();
+        accountId = preferenceManager.GetLoggedInUserId();
         contactsService = new ContactsService();
         createCallBacks();
 

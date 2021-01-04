@@ -20,4 +20,9 @@ public class AccountService {
         Call<MessageResponse> responseCall = this.IAccountService.UpdateAccount(accountId,accountUpdateRequest);
         responseCall.enqueue(new CustomizeCallback<MessageResponse>(responseCallback));
     }
+
+    public void DeleteAccount(int accountId,ResponseCallback responseCallback){
+        Call<MessageResponse> responseCall = this.IAccountService.DeleteAccount(accountId);
+        responseCall.enqueue(new CustomizeCallback<MessageResponse>(responseCallback));
+    }
 }

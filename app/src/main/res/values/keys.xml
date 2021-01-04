@@ -3,5 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
     <!--    Keys and resources-->
-<string name="preference_key" translatable="false">RPS!3GH</string>
+    <string name="preference_key" translatable="false">RPS!3GH</string>
+    <string name="device_key" translatable="false">KE#MPA</string>
 </resources>

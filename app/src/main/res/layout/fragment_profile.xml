@@ -7,12 +7,9 @@
     android:background="@drawable/profile_gradient"
     tools:context=".Fragment.ProfileFragment">
 
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="15dp"
-        android:paddingBottom="30dp"
         android:scrollbars="vertical">
 
         <androidx.cardview.widget.CardView
@@ -21,9 +18,10 @@
             android:backgroundTint="@color/light_grey"
             app:cardCornerRadius="15dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="60dp"
             android:layout_marginStart="25dp"
             android:layout_marginEnd="25dp"
+            android:layout_marginBottom="10dp"
             android:scrollbars="vertical"
             android:elevation="15dp">
 
@@ -103,6 +101,26 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="25dp"
                 android:layout_marginStart="25dp"
+                android:id="@+id/profile_address"
+                android:hint="@string/address"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/address"
+                    android:background="@color/light_grey"
+                    android:drawablePadding="15dp"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_below="@id/profile_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginStart="25dp"
                 android:id="@+id/profile_email"
                 android:hint="@string/txt_email"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -158,22 +176,37 @@
                     android:background="@color/light_grey"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:layout_below="@id/profile_new_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
                 android:elevation="10dp"
                 android:textColor="@color/blue"
                 android:layout_marginTop="20dp"
-                android:layout_marginStart="55dp"
+                android:layout_marginEnd="20dp"
                 android:layout_marginBottom="30dp"
-                android:layout_marginEnd="55dp"
                 android:layout_gravity="center"
                 android:id="@+id/btnProfile"
                 android:clickable="true"
                 android:focusable="true"
-                android:text="@string/confirm_changes"
-                android:background="@drawable/round_buttons"/>
+                android:text="@string/confirm"
+                app:cornerRadius="15dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_profile_delete"
+                android:layout_below="@id/profile_new_password"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:elevation="10dp"
+                android:textColor="@color/blue"
+                android:text="@string/delete"
+                android:clickable="true"
+                android:focusable="true"
+                app:cornerRadius="15dp"
+                android:backgroundTint="@color/grey"/>
         </RelativeLayout>
 
         </androidx.cardview.widget.CardView>

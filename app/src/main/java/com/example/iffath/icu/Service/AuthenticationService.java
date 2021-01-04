@@ -6,6 +6,7 @@ import com.example.iffath.icu.Client.RetrofitClient;
 import com.example.iffath.icu.DTO.Request.LoginRequest;
 import com.example.iffath.icu.DTO.Request.RegisterRequest;
 import com.example.iffath.icu.DTO.Response.LoginResponse;
+import com.example.iffath.icu.DTO.Response.RegisterResponse;
 import com.example.iffath.icu.Model.Account;
 import com.example.iffath.icu.Service.Interface.IAuthenticationService;
 
@@ -24,7 +25,7 @@ public class AuthenticationService {
     }
 
     public void register(RegisterRequest registerRequest, ResponseCallback callback) {
-        Call<LoginResponse> userCall = IAuthenticationService.registerUser(registerRequest);
-        userCall.enqueue(new CustomizeCallback<LoginResponse>(callback));
+        Call<RegisterResponse> userCall = IAuthenticationService.registerUser(registerRequest);
+        userCall.enqueue(new CustomizeCallback<RegisterResponse>(callback));
     }
 }

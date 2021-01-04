@@ -1,8 +1,5 @@
 package com.example.iffath.icu.DTO.Response;
 
-import com.example.iffath.icu.Model.Account;
-import com.example.iffath.icu.Model.Camera;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginResponse {
-    private Account account;
-    private Camera camera;
+public class CameraResponse {
+    private int id;
+    private String model;
+    private String rtsp_address;
+    private boolean armed;
+    private int account_id;
 }

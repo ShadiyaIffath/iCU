@@ -1,4 +1,4 @@
-package com.example.iffath.icu.DTO.Request;
+package com.example.iffath.icu.DTO.Response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterRequest {
+public class RegisterResponse {
+    private int id;
     private String first_name;
     private String last_name;
     private String email;

@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         LoginResponse loginResponse = (LoginResponse) response.body();
         if(loginResponse != null) {
             storeLoggedInUser(loginResponse);
-            navigateToHome(loginResponse.getFirst_name(),loginResponse.getLast_name());
+            navigateToHome(loginResponse.getAccount().getFirst_name(),loginResponse.getAccount().getLast_name());
         }
     }
 
@@ -132,6 +132,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void storeLoggedInUser(LoginResponse response){
         // inside of an Activity, `getString` is called directly
         preferenceManager = SharedPreferenceManager.getInstance(this);
-        preferenceManager.StoreAccountDetails(response);
+        preferenceManager.StoreAccountDetails(response.getAccount());
+
+        if(response.getCamera() != null){
+            preferenceManager.StoreDeviceDetails(response.getCamera());
+        }
     }
 }

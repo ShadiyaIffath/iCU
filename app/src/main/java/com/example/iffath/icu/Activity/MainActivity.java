@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logout() {
-        preferenceManager.clear();
+        preferenceManager.Clear();
         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         finish();
     }

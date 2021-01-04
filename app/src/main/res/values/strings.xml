@@ -30,9 +30,11 @@
     <string name="emergency_contacts">Emergency Contacts</string>
     <string name="burglar_alerts_count">Number of people we alert for you</string>
     <string name="view_surveillance">View Surveillance</string>
-    <string name="confirm_changes">Confirm Changes</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="nickname">Nickname</string>
     <string name="name">Name</string>
+    <string name="delete">Delete</string>
+    <string name="test_connection">Test Connection</string>
+    <string name="address">Address</string>
 </resources>

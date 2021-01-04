@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.iffath.icu.Callback.ResponseCallback;
 import com.example.iffath.icu.DTO.Request.RegisterRequest;
 import com.example.iffath.icu.DTO.Response.LoginResponse;
+import com.example.iffath.icu.DTO.Response.RegisterResponse;
 import com.example.iffath.icu.Model.Account;
 import com.example.iffath.icu.R;
 import com.example.iffath.icu.Service.AuthenticationService;
@@ -26,7 +27,7 @@ import es.dmoral.toasty.Toasty;
 import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, ResponseCallback {
-    TextInputLayout firstName,lastName,email,passTxt, numberTxt;
+    TextInputLayout firstName,lastName,email,passTxt,addressTxt, numberTxt;
     ImageView splash;
     TextView logo, slogan;
     Button callSignIn, register;
@@ -47,6 +48,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         firstName = findViewById(R.id.register_firstName);
         lastName = findViewById(R.id.register_lastName);
         numberTxt = findViewById(R.id.register_phone);
+        addressTxt = findViewById(R.id.register_address);
         email = findViewById(R.id.register_email);
         passTxt = findViewById(R.id.register_password);
         register = findViewById(R.id.btnRegister);
@@ -73,10 +75,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onSuccess(Response response) {
-        LoginResponse loginResponse = (LoginResponse) response.body();
-        if(loginResponse != null) {
-            storeRegisteredUser(loginResponse);
-            navigateToHome(loginResponse.getFirst_name(),loginResponse.getLast_name());
+        RegisterResponse registerResponse = (RegisterResponse) response.body();
+        if(registerResponse != null) {
+            storeRegisteredUser(registerResponse);
+            navigateToHome(registerResponse.getFirst_name(),registerResponse.getLast_name());
         }
     }
 
@@ -96,13 +98,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         String number = numberTxt.getEditText().getText().toString();
         String mail = email.getEditText().getText().toString();
         String password = passTxt.getEditText().getText().toString();
+        String address = addressTxt.getEditText().getText().toString();
 
-        if (fName.isEmpty() || lName.isEmpty() || mail.isEmpty() || number.isEmpty() || password.isEmpty()) {
+        if (fName.isEmpty() || lName.isEmpty() || mail.isEmpty() || number.isEmpty() || address.isEmpty()|| password.isEmpty()) {
             if (fName.isEmpty()) {
-                firstName.setError("Name cannot be blank");
+                firstName.setError("First name cannot be blank");
             }
             if (lName.isEmpty()) {
-                lastName.setError("Name cannot be blank");
+                lastName.setError("Last name cannot be blank");
             }
             if (password.isEmpty()) {
                 passTxt.setError("Password cannot be blank");
@@ -110,12 +113,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             if (mail.isEmpty()) {
                 email.setError("E-mail cannot be blank");
             }
+            if(address.isEmpty()){
+                addressTxt.setError("Address cannot be blank");
+            }
             if (number.isEmpty()) {
                 numberTxt.setError("Contact number cannot be blank");
             }
             Toasty.error(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
         } else {
-            account = new RegisterRequest(fName, lName, mail , password, Integer.parseInt(number));
+            account = new RegisterRequest(fName, lName, mail, password,address, Integer.parseInt(number));
             authenticationService.register(account,this);
         }
     }
@@ -149,9 +155,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void storeRegisteredUser(LoginResponse response){
+    private void storeRegisteredUser(RegisterResponse response){
         preferenceManager = SharedPreferenceManager.getInstance(this);
-        preferenceManager.StoreAccountDetails(response);
+        preferenceManager.StoreRegisteredAccountDetails(response);
     }
 
 }

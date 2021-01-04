@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
     android:orientation="vertical"
     android:background="@color/white"
     tools:context=".Activity.RegisterActivity">
@@ -40,6 +39,10 @@
         android:textColor="@color/grey"
         android:textSize="20sp"
         android:text="@string/register_message" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_margin="20dp"
@@ -81,6 +84,21 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/register_address"
+            android:hint="@string/address"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/address"
+                android:drawablePadding="15dp"
+                android:inputType="textMultiLine"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/register_phone"
             android:hint="@string/txt_phone"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -112,7 +130,6 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:id="@+id/register_password"
         android:hint="@string/txt_password"
         app:passwordToggleEnabled="true"
@@ -155,4 +172,5 @@
             android:transitionName="login_reg_Btntransition"
             android:background="#00000000"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
 </LinearLayout>

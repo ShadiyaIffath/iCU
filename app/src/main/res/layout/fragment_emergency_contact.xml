@@ -7,6 +7,12 @@
     android:background="@drawable/profile_gradient"
     tools:context=".Fragment.EmergencyContactFragment">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="30dp"
+        android:scrollbars="vertical">
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -123,4 +129,5 @@
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>
