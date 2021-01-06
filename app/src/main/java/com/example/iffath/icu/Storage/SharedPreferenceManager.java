@@ -44,16 +44,6 @@ public class SharedPreferenceManager {
         editor.apply();
     }
 
-    public void StoreDeviceDetails(Camera camera){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(device_key_preferences, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("camera_id", camera.getId());
-        editor.putString("camera_model",camera.getModel());
-        editor.putString("camera_rtsp",camera.getRtsp_address());
-        editor.putBoolean("camera_armed", camera.isArmed());
-        editor.apply();
-    }
-
     public void StoreRegisteredAccountDetails(RegisterResponse account){
         SharedPreferences sharedPreferences = context.getSharedPreferences(profile_Key_Preferences, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -67,6 +57,17 @@ public class SharedPreferenceManager {
         editor.apply();
     }
 
+    public void UpdateAccount(AccountUpdateRequest account){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(profile_Key_Preferences, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("firstName", account.getFirst_name());
+        editor.putString("lastName", account.getLast_name());
+        editor.putString("email", account.getEmail());
+        editor.putInt("phone", account.getPhone());
+        editor.putString("password", account.getPassword());
+        editor.apply();
+    }
+
     public Account GetAccount(){
         SharedPreferences sharedPreferences = context.getSharedPreferences(profile_Key_Preferences, Context.MODE_PRIVATE);
         int id = sharedPreferences.getInt("id", -1);
@@ -77,16 +78,6 @@ public class SharedPreferenceManager {
         String password = sharedPreferences.getString("password", "");
         String address = sharedPreferences.getString("address","");
         return new Account(id,fName,lName,mail,address,password,number);
-    }
-
-    public Camera GetCamera(){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(device_key_preferences, Context.MODE_PRIVATE);
-        int id = sharedPreferences.getInt("camera_id",-1);
-        String model = sharedPreferences.getString("camera_model","");
-        String rtsp = sharedPreferences.getString("camera_rtsp","");
-        boolean armed = sharedPreferences.getBoolean("camera_armed", false);
-        int accountId = GetLoggedInUserId();
-        return new Camera(id,model,rtsp,armed,accountId);
     }
 
     public String GetAccountName(){
@@ -111,23 +102,38 @@ public class SharedPreferenceManager {
         return false;
     }
 
+    public void StorePushNotificationToken(String token){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(profile_Key_Preferences, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("token", token);
+    }
+
+    public void StoreDeviceDetails(Camera camera){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(device_key_preferences, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("camera_id", camera.getId());
+        editor.putString("camera_model",camera.getModel());
+        editor.putString("camera_rtsp",camera.getRtsp_address());
+        editor.putBoolean("camera_armed", camera.isArmed());
+        editor.apply();
+    }
+
+    public Camera GetCamera(){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(device_key_preferences, Context.MODE_PRIVATE);
+        int id = sharedPreferences.getInt("camera_id",-1);
+        String model = sharedPreferences.getString("camera_model","");
+        String rtsp = sharedPreferences.getString("camera_rtsp","");
+        boolean armed = sharedPreferences.getBoolean("camera_armed", false);
+        int accountId = GetLoggedInUserId();
+        return new Camera(id,model,rtsp,armed,accountId);
+    }
+
     public boolean HasConnection(){
         SharedPreferences sharedPreferences = context.getSharedPreferences(device_key_preferences, Context.MODE_PRIVATE);
         if(sharedPreferences.getInt("camera_id",-1)!=-1){
             return true;
         }
         return false;
-    }
-
-    public void UpdateAccount(AccountUpdateRequest account){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(profile_Key_Preferences, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("firstName", account.getFirst_name());
-        editor.putString("lastName", account.getLast_name());
-        editor.putString("email", account.getEmail());
-        editor.putInt("phone", account.getPhone());
-        editor.putString("password", account.getPassword());
-        editor.apply();
     }
 
     public void UpdateDeviceDetails(CameraRequest camera){

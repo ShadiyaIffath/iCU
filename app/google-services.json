@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "525135337505",
+    "project_id": "burglar-detection",
+    "storage_bucket": "burglar-detection.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525135337505:android:213ed00ef8665d77212b60",
+        "android_client_info": {
+          "package_name": "com.example.iffath.icu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "525135337505-q4ad8stf8d2ed5q97o5jrhoo7p1nstj4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuQMnxw4JNtCcmKOO1ugJWALCUAKbbk1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "525135337505-q4ad8stf8d2ed5q97o5jrhoo7p1nstj4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
