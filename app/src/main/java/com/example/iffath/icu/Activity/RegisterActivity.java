@@ -20,10 +20,12 @@ import com.example.iffath.icu.DTO.Response.RegisterResponse;
 import com.example.iffath.icu.Model.Account;
 import com.example.iffath.icu.R;
 import com.example.iffath.icu.Service.AuthenticationService;
+import com.example.iffath.icu.Service.RegisterForPushNotificationsAsync;
 import com.example.iffath.icu.Storage.SharedPreferenceManager;
 import com.google.android.material.textfield.TextInputLayout;
 
 import es.dmoral.toasty.Toasty;
+import me.pushy.sdk.Pushy;
 import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, ResponseCallback {
@@ -38,6 +40,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Pushy.listen(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_register);
 
@@ -79,6 +82,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if(registerResponse != null) {
             storeRegisteredUser(registerResponse);
             navigateToHome(registerResponse.getFirst_name(),registerResponse.getLast_name());
+            new RegisterForPushNotificationsAsync(this, registerResponse.getId()).execute();
         }
     }
 
@@ -121,7 +125,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
             Toasty.error(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
         } else {
-            account = new RegisterRequest(fName, lName, mail, password,address, Integer.parseInt(number));
+            account = new RegisterRequest(fName, lName, mail, password,address,"", Integer.parseInt(number));
             authenticationService.register(account,this);
         }
     }

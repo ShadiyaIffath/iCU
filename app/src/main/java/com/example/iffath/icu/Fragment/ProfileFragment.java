@@ -152,7 +152,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             }
             Toasty.error(getContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
         } else {
-            editAccount = new AccountUpdateRequest(fName,lName,account.getEmail(),address,account.getPassword(), Integer.parseInt(phone));
+            editAccount = new AccountUpdateRequest(fName,lName,account.getEmail(),address,account.getPassword(),account.getDevice_id(), Integer.parseInt(phone));
             if(!password.isEmpty() || !email.equals(account.getEmail())){
                 editAccount.setPassword(password);
                 editAccount.setEmail(email);

@@ -127,7 +127,6 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
                 device_rtsp.getEditText().setText("");
 
                 device_connectivity.setImageResource(R.drawable.disconnected);
-                test_result.setVisibility(View.INVISIBLE);
                 hasConnection = preferenceManager.HasConnection();
                 btnDeleteDevice.setVisibility(View.INVISIBLE);
             }
@@ -199,7 +198,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                         cameraService.DeleteCamera(camera.getId(),deleteCameraCallback);
-                        test_result.setVisibility(View.VISIBLE);
+                        test_result.setVisibility(View.INVISIBLE);
                     }
                 });
         mBuilder.setNegativeButton("No",
@@ -228,7 +227,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
         }else {
             device_rtsp.setError(null);
             device_model.setError(null);
-            return new CameraRequest(model, rtsp, accountId);
+            return new CameraRequest(model, rtsp, accountId,false);
         }
     }
     private void updateConnection(){

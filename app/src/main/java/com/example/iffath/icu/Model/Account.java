@@ -16,14 +16,16 @@ public class Account {
     private String email;
     private String address;
     private String password;
+    private String device_id;
     private int phone;
 
-    public Account(String first_name, String last_name, String email, String password,String address, int phone) {
+    public Account(String first_name, String last_name, String email, String password,String address, int phone, String device_id) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
         this.password = password;
         this.address = address;
         this.phone = phone;
+        this.device_id = device_id;
     }
 }

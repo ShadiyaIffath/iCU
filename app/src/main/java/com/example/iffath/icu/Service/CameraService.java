@@ -32,9 +32,4 @@ public class CameraService {
         Call<MessageResponse> responseCall = this.ICameraService.DeleteCamera(deviceId);
         responseCall.enqueue(new CustomizeCallback<MessageResponse>(responseCallback));
     }
-
-    public void TestConnection(String rtsp, ResponseCallback responseCallback){
-        Call<MessageResponse> responseCall = this.ICameraService.TestConnection(rtsp);
-        responseCall.enqueue(new CustomizeCallback<MessageResponse>(responseCallback));
-    }
 }

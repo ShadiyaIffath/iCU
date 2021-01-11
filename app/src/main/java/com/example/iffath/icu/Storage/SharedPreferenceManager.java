@@ -77,7 +77,8 @@ public class SharedPreferenceManager {
         String mail = sharedPreferences.getString("email", "");
         String password = sharedPreferences.getString("password", "");
         String address = sharedPreferences.getString("address","");
-        return new Account(id,fName,lName,mail,address,password,number);
+        String device_id = sharedPreferences.getString("token","");
+        return new Account(id,fName,lName,mail,address,password,device_id,number);
     }
 
     public String GetAccountName(){
@@ -106,6 +107,14 @@ public class SharedPreferenceManager {
         SharedPreferences sharedPreferences = context.getSharedPreferences(profile_Key_Preferences, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("token", token);
+    }
+
+    public boolean IsPushNotificationRegistered(){
+        boolean valid = false;
+        SharedPreferences sharedPreferences = context.getSharedPreferences(profile_Key_Preferences, Context.MODE_PRIVATE);
+        if(!sharedPreferences.getString("token", "").equals(""))
+            valid = true;
+        return valid;
     }
 
     public void StoreDeviceDetails(Camera camera){

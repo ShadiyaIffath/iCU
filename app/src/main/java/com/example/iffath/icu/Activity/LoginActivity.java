@@ -18,10 +18,12 @@ import com.example.iffath.icu.DTO.Request.LoginRequest;
 import com.example.iffath.icu.DTO.Response.LoginResponse;
 import com.example.iffath.icu.R;
 import com.example.iffath.icu.Service.AuthenticationService;
+import com.example.iffath.icu.Service.RegisterForPushNotificationsAsync;
 import com.example.iffath.icu.Storage.SharedPreferenceManager;
 import com.google.android.material.textfield.TextInputLayout;
 
 import es.dmoral.toasty.Toasty;
+import me.pushy.sdk.Pushy;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, ResponseCallback {
@@ -35,6 +37,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Pushy.listen(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
         authenticationService = new AuthenticationService();
@@ -136,6 +139,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if(response.getCamera() != null){
             preferenceManager.StoreDeviceDetails(response.getCamera());
+        }
+        if (!preferenceManager.IsPushNotificationRegistered()) {
+            new RegisterForPushNotificationsAsync(this,response.getAccount().getId()).execute();
         }
     }
 }

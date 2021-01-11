@@ -15,5 +15,6 @@ public class AccountUpdateRequest {
     private String email;
     private String address;
     private String password;
+    private String device_id;
     private int phone;
 }

@@ -16,5 +16,6 @@ public class RegisterResponse {
     private String email;
     private String password;
     private String address;
+    private String device_id;
     private int phone;
 }

@@ -16,7 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.iffath.icu.R;
+import com.example.iffath.icu.Service.RegisterForPushNotificationsAsync;
 import com.example.iffath.icu.Storage.SharedPreferenceManager;
+
+import me.pushy.sdk.Pushy;
 
 public class SplashActivity extends AppCompatActivity {
     private static int SPLASH_DURATION = 3000;
@@ -30,6 +33,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Pushy.listen(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
 
@@ -50,6 +54,9 @@ public class SplashActivity extends AppCompatActivity {
         preferenceManager = SharedPreferenceManager.getInstance( this);
         boolean isLogged = preferenceManager.IsLoggedIn();
         if (isLogged) {
+            if (!preferenceManager.IsPushNotificationRegistered()) {
+                new RegisterForPushNotificationsAsync(this,preferenceManager.GetLoggedInUserId()).execute();
+            }
             navigateToHome();
         }else{
             navigateToLogin();

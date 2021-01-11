@@ -13,9 +13,6 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ICameraService {
-    @POST("device/test-connection")
-    Call<MessageResponse> TestConnection(@Body String rtsp);
-
     @POST("device/setup-device")
     Call<Camera> SetupConnection(@Body CameraRequest cameraRequest);
 
