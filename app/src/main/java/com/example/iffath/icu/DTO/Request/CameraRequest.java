@@ -19,6 +19,6 @@ public class CameraRequest {
         this.model = model;
         this.rtsp_address = rtsp_address;
         this.account_id = account_id;
-        this.armed = false;
+        this.armed = armed;
     }
 }

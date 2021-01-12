@@ -21,4 +21,7 @@ public interface ICameraService {
 
     @DELETE("device/delete-device/{deviceId}")
     Call<MessageResponse> DeleteCamera(@Path("deviceId") int id);
+
+    @POST("device/arm-system/{accountId}")
+    Call<MessageResponse> ArmCamera(@Path("accountId") int accountId);
 }

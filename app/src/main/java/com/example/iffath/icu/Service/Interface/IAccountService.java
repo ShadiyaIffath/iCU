@@ -18,6 +18,6 @@ public interface IAccountService {
     @DELETE("account/delete-account/{accountId}")
     Call<MessageResponse> DeleteAccount(@Path("accountId") int id);
 
-    @POST("/account/register-device")
+    @POST("account/register-device")
     Call<MessageResponse> RegisterDevice(@Body PushyRegisterIdRequest pushyRequest);
 }

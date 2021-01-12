@@ -154,6 +154,13 @@ public class SharedPreferenceManager {
         editor.apply();
     }
 
+    public void ArmDevice(boolean status){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(device_key_preferences, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("camera_armed", status);
+        editor.apply();
+    }
+
     public void Clear() {
         SharedPreferences sharedPreferences = context.getSharedPreferences(profile_Key_Preferences, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

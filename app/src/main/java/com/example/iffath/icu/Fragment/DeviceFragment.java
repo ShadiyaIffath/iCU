@@ -33,18 +33,18 @@ import es.dmoral.toasty.Toasty;
 import retrofit2.Response;
 
 public class DeviceFragment extends Fragment implements View.OnClickListener {
-    MaterialButton btnDeleteDevice,btnDeviceCancel,btnDeviceConfirm,test_connection;
+    MaterialButton btnDeleteDevice,btnDeviceCancel,btnDeviceConfirm,test_connection,btnDeviceArm;
     TextView test_result;
     ImageView device_connectivity;
     TextInputLayout device_model,device_rtsp;
 
     int accountId;
-    boolean hasConnection = false;
+    boolean hasConnection,isConnected = false;
     CameraService cameraService;
     Camera camera;
     CameraRequest cameraRequest;
     SharedPreferenceManager preferenceManager;
-    ResponseCallback deleteCameraCallback, updateCameraCallback, setupCallBack;
+    ResponseCallback deleteCameraCallback, updateCameraCallback, setupCallBack,armDeviceCallback;
 
     public DeviceFragment() {
         // Required empty public constructor
@@ -64,6 +64,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
         btnDeleteDevice = view.findViewById(R.id.btnDeleteDevice);
         btnDeviceCancel = view.findViewById(R.id.btnDeviceCancel);
         btnDeviceConfirm = view.findViewById(R.id.btnDeviceConfirm);
+        btnDeviceArm = view.findViewById(R.id.btnDeviceArm);
         test_connection = view.findViewById(R.id.test_connection);
         test_result = view.findViewById(R.id.test_result);
         device_connectivity = view.findViewById(R.id.device_connectivity);
@@ -79,6 +80,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
         btnDeviceCancel.setOnClickListener(this);
         btnDeviceConfirm.setOnClickListener(this);
         test_connection.setOnClickListener(this);
+        btnDeviceArm.setOnClickListener(this);
         return view;
     }
 
@@ -102,7 +104,11 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.test_connection:
-                test_rtsp();
+                testRtsp();
+                break;
+
+            case R.id.btnDeviceArm:
+                armDevice();
                 break;
         }
     }
@@ -111,9 +117,15 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
         camera = preferenceManager.GetCamera();
         device_model.getEditText().setText(camera.getModel());
         device_rtsp.getEditText().setText(camera.getRtsp_address());
+        btnDeviceConfirm.setEnabled(true);
         if(testConnection(camera.getRtsp_address())==1){
             device_connectivity.setImageResource(R.drawable.connected);
+            isConnected = true;
+            if(camera.isArmed()){
+                btnDeviceConfirm.setEnabled(false);
+            }
         }else{
+            isConnected = false;
             device_connectivity.setImageResource(R.drawable.disconnected);
         }
     }
@@ -128,6 +140,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
 
                 device_connectivity.setImageResource(R.drawable.disconnected);
                 hasConnection = preferenceManager.HasConnection();
+                isConnected = false;
                 btnDeleteDevice.setVisibility(View.INVISIBLE);
             }
 
@@ -143,6 +156,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
                 Toasty.success(getContext(), "Your IP device has been successfully updated", Toasty.LENGTH_SHORT).show();
                 MessageResponse messageResponse = (MessageResponse) response.body();
                 device_connectivity.setImageResource(R.drawable.connected);
+                isConnected = true;
                 preferenceManager.UpdateDeviceDetails(cameraRequest);
                 camera = preferenceManager.GetCamera();
             }
@@ -165,6 +179,19 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
                 btnDeleteDevice.setVisibility(View.VISIBLE);
                 hasConnection = true;
                 camera = preferenceManager.GetCamera();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Toasty.error(getContext(), "Server error. Try again later", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        armDeviceCallback = new ResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                Toasty.success(getContext(),"You are secured", Toasty.LENGTH_SHORT).show();
+                preferenceManager.ArmDevice(true);
             }
 
             @Override
@@ -302,7 +329,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void test_rtsp(){
+    private void testRtsp(){
         String rtsp = device_rtsp.getEditText().getText().toString();
         device_rtsp.setError(null);
         device_model.setError(null);
@@ -318,6 +345,14 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
         }else{
             device_rtsp.setError("RTSP field cannot be blank");
             Toasty.error(getContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void armDevice(){
+        if(preferenceManager.HasConnection() && isConnected){
+            cameraService.ArmCamera(camera.getAccount_id(),armDeviceCallback);
+        }else{
+            Toasty.error(getContext(),"A camera with stable connection required",Toasty.LENGTH_SHORT).show();
         }
     }
 

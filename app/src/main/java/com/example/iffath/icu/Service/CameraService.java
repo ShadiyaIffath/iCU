@@ -32,4 +32,9 @@ public class CameraService {
         Call<MessageResponse> responseCall = this.ICameraService.DeleteCamera(deviceId);
         responseCall.enqueue(new CustomizeCallback<MessageResponse>(responseCallback));
     }
+
+    public void ArmCamera(int accountId,ResponseCallback responseCallback){
+        Call<MessageResponse> responseCall = this.ICameraService.ArmCamera(accountId);
+        responseCall.enqueue(new CustomizeCallback<MessageResponse>(responseCallback));
+    }
 }

@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
         // The custom toolbar replaces the action bar
         setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled ( true );
+        Objects.requireNonNull(getSupportActionBar())
+                .setDisplayHomeAsUpEnabled ( true );
 
         appBarConfiguration = new AppBarConfiguration.Builder(R.id.navigation_home)
                 .setOpenableLayout(drawer)
