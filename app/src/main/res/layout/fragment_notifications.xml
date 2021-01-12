@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_grey"
+    android:background="@color/white"
     tools:context=".Fragment.NotificationsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -13,5 +13,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <ImageView
+        android:id="@+id/no_notification_image"
+        android:layout_centerVertical="true"
+        android:visibility="invisible"
+        android:layout_marginStart="65dp"
+        android:layout_marginEnd="25dp"
+        android:layout_width="500dp"
+        android:layout_height="350dp"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_below="@id/no_notification_image"
+        android:layout_centerHorizontal="true"
+        android:text="No notifications"
+        android:textSize="30sp" />
 </RelativeLayout>

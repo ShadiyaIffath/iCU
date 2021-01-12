@@ -7,7 +7,7 @@
     android:layout_marginStart="20dp"
     android:layout_marginEnd="20dp"
     android:layout_marginBottom="5dp"
-    android:backgroundTint="@color/white"
+    android:backgroundTint="@color/light_grey"
     android:elevation="15dp"
     android:padding="5dp"
     app:cardCornerRadius="15dp">
@@ -20,7 +20,8 @@
             android:id="@+id/msg_created"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            android:layout_below="@id/msg_title"
+            android:layout_marginTop="10dp"
             android:text="2020-04-05"
             android:textColor="@color/dark"
             android:textSize="14sp"
@@ -36,23 +37,12 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:layout_below="@+id/msg_title"
-            android:id="@+id/msg_body"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="50dp"
-            android:textSize="12sp"
-            android:text="Suspicious behavior detected at 2021-01-11 14.23.2 UTC"
-            android:layout_width="match_parent"
-            android:textColor="@color/black"
-            android:layout_height="30dp"/>
-
         <ImageButton
             android:id="@+id/btnDelete_msg"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
             android:elevation="5dp"
             android:backgroundTint="@color/white"
             android:src="@drawable/trash" />

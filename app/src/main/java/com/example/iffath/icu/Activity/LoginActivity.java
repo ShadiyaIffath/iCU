@@ -3,11 +3,13 @@ package com.example.iffath.icu.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -81,6 +83,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Toasty.error(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
         }else{
             Toasty.error(this, "Server error. Try again later", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onUserInteraction() {
+        if (getCurrentFocus() != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
 

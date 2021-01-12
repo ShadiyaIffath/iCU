@@ -52,7 +52,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Notification notification = notificationList.get(position);
         holder.msg_created.setText(getLocalDateTimeString(notification.getOccurred_on()));
-        holder.msg_body.setText(notification.getMessage().substring(0,40)+ "...");
         holder.msg_title.setText(notification.getTitle());
         setFadeAnimation(holder.itemView);
         holder.btnDelete_msg.setOnLongClickListener(new View.OnLongClickListener() {
@@ -115,12 +114,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView msg_created,msg_title,msg_body;
+        TextView msg_created,msg_title;
         ImageButton btnDelete_msg;
         CardView msg_cardView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            msg_body = itemView.findViewById(R.id.msg_body);
             msg_title = itemView.findViewById(R.id.msg_title);
             msg_created = itemView.findViewById(R.id.msg_created);
             btnDelete_msg = itemView.findViewById(R.id.btnDelete_msg);

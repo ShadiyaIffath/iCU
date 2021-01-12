@@ -5,4 +5,5 @@
     <!--    Keys and resources-->
     <string name="preference_key" translatable="false">RPS!3GH</string>
     <string name="device_key" translatable="false">KE#MPA</string>
+    <string name="notification" translatable="false">https://i.pinimg.com/564x/29/d2/46/29d246781fc2368446e9c46fc063efdb.jpg</string>
 </resources>

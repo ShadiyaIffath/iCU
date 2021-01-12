@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.example.iffath.icu.R;
 import com.example.iffath.icu.Service.Interface.CustomItemClickListener;
 import com.example.iffath.icu.Service.NotificationService;
 import com.example.iffath.icu.Storage.SharedPreferenceManager;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -33,6 +35,7 @@ public class NotificationsFragment extends Fragment implements CustomItemClickLi
     List<Notification> notifications;
     NotificationService notificationService;
     RecyclerView recyclerView;
+    ImageView no_notification_image;
 
     View view;
     int accountId;
@@ -41,6 +44,7 @@ public class NotificationsFragment extends Fragment implements CustomItemClickLi
     NotificationAdapter recyclerAdapter;
     SharedPreferenceManager preferenceManager;
     ResponseCallback deleteNotification;
+    String no_notification;
     private final static String pattern = "MM/dd/yyyy HH:mm:ss";
 
     public NotificationsFragment() {
@@ -58,8 +62,10 @@ public class NotificationsFragment extends Fragment implements CustomItemClickLi
 
         preferenceManager = SharedPreferenceManager.getInstance(this.getContext());
         accountId = preferenceManager.GetLoggedInUserId();
+        no_notification = getContext().getString(R.string.notification);
 
         recyclerView = view.findViewById(R.id.notification_recycle);
+        no_notification_image = view.findViewById(R.id.no_notification_image);
 
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
         notificationService.GetAllNotifications(accountId, this);
@@ -86,6 +92,13 @@ public class NotificationsFragment extends Fragment implements CustomItemClickLi
     public void onSuccess(Response response) {
         notifications = (List<Notification>)response.body();
         if(notifications.size() == 0){
+            recyclerView.setVisibility(View.INVISIBLE);
+            no_notification_image.setVisibility(View.VISIBLE);
+            Picasso.get()
+                    .load(no_notification)
+                    .fit()
+                    .centerCrop()
+                    .into(no_notification_image);
             Toasty.info(getContext(), "You have 0 Notifications", Toasty.LENGTH_SHORT).show();
         }
         else {
@@ -98,7 +111,14 @@ public class NotificationsFragment extends Fragment implements CustomItemClickLi
 
     @Override
     public void onError(String errorMessage) {
-        Toasty.error(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+        recyclerView.setVisibility(View.INVISIBLE);
+        no_notification_image.setVisibility(View.VISIBLE);
+        Picasso.get()
+                .load(no_notification)
+                .fit()
+                .centerCrop()
+                .into(no_notification_image);
+        Toasty.error(getContext(), "Server error. Try again later", Toast.LENGTH_SHORT).show();
     }
 
     private void createCallBacks(){
