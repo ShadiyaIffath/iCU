@@ -59,10 +59,26 @@
         android:id="@+id/navigation_devices"
         android:name="com.example.iffath.icu.Fragment.DeviceFragment"
         android:label="IP Camera"
-        tools:layout="@layout/fragment_device" />
+        tools:layout="@layout/fragment_device" >
+        <action
+            android:id="@+id/action_navigation_devices_to_deviceSetupFragment"
+            app:destination="@id/deviceSetupFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.iffath.icu.Fragment.NotificationsFragment"
         android:label="Notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/deviceSetupFragment"
+        android:name="com.example.iffath.icu.Fragment.DeviceSetupFragment"
+        tools:layout="@layout/fragment_device_setup" >
+        <action
+            android:id="@+id/action_deviceSetupFragment_to_navigation_devices"
+            app:destination="@id/navigation_devices"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit" />
+    </fragment>
 </navigation>

@@ -36,6 +36,7 @@ public class NotificationsFragment extends Fragment implements CustomItemClickLi
     NotificationService notificationService;
     RecyclerView recyclerView;
     ImageView no_notification_image;
+    TextView no_notification_text;
 
     View view;
     int accountId;
@@ -66,6 +67,7 @@ public class NotificationsFragment extends Fragment implements CustomItemClickLi
 
         recyclerView = view.findViewById(R.id.notification_recycle);
         no_notification_image = view.findViewById(R.id.no_notification_image);
+        no_notification_text = view.findViewById(R.id.no_notification_text);
 
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
         notificationService.GetAllNotifications(accountId, this);
@@ -99,6 +101,7 @@ public class NotificationsFragment extends Fragment implements CustomItemClickLi
                     .fit()
                     .centerCrop()
                     .into(no_notification_image);
+            no_notification_text.setVisibility(View.VISIBLE);
             Toasty.info(getContext(), "You have 0 Notifications", Toasty.LENGTH_SHORT).show();
         }
         else {
@@ -113,6 +116,7 @@ public class NotificationsFragment extends Fragment implements CustomItemClickLi
     public void onError(String errorMessage) {
         recyclerView.setVisibility(View.INVISIBLE);
         no_notification_image.setVisibility(View.VISIBLE);
+        no_notification_text.setVisibility(View.VISIBLE);
         Picasso.get()
                 .load(no_notification)
                 .fit()

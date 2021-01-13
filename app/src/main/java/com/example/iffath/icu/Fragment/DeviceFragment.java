@@ -5,11 +5,16 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +29,7 @@ import com.example.iffath.icu.Service.CameraService;
 import com.example.iffath.icu.Storage.SharedPreferenceManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.squareup.picasso.Picasso;
 
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -33,18 +39,20 @@ import es.dmoral.toasty.Toasty;
 import retrofit2.Response;
 
 public class DeviceFragment extends Fragment implements View.OnClickListener {
-    MaterialButton btnDeleteDevice,btnDeviceCancel,btnDeviceConfirm,test_connection,btnDeviceArm;
-    TextView test_result;
-    ImageView device_connectivity;
-    TextInputLayout device_model,device_rtsp;
+    MaterialButton btnDeviceArm, btn_add_device;
+    ImageButton btnDeleteDevice, btnDeviceEdit;
+    TextView device_model_title, device_model_txt, device_rtsp_title, device_rtsp_txt, device_armed_title, device_armed_txt,no_device_text;
+    ImageView device_connectivity,no_device_image;
+    RelativeLayout layout;
+    View view;
 
     int accountId;
+    String no_device;
     boolean hasConnection,isConnected = false;
     CameraService cameraService;
     Camera camera;
-    CameraRequest cameraRequest;
     SharedPreferenceManager preferenceManager;
-    ResponseCallback deleteCameraCallback, updateCameraCallback, setupCallBack,armDeviceCallback;
+    ResponseCallback deleteCameraCallback,armDeviceCallback;
 
     public DeviceFragment() {
         // Required empty public constructor
@@ -54,32 +62,43 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_device, container, false);
+        view = inflater.inflate(R.layout.fragment_device, container, false);
         preferenceManager = SharedPreferenceManager.getInstance(getContext());
         cameraService = new CameraService();
         accountId = preferenceManager.GetLoggedInUserId();
         hasConnection = preferenceManager.HasConnection();
+        no_device = getContext().getString(R.string.notification);
         createCallbacks();
         //hooks
+        layout = view.findViewById(R.id.device_info);
+
         btnDeleteDevice = view.findViewById(R.id.btnDeleteDevice);
-        btnDeviceCancel = view.findViewById(R.id.btnDeviceCancel);
-        btnDeviceConfirm = view.findViewById(R.id.btnDeviceConfirm);
         btnDeviceArm = view.findViewById(R.id.btnDeviceArm);
-        test_connection = view.findViewById(R.id.test_connection);
-        test_result = view.findViewById(R.id.test_result);
+        btnDeviceEdit = view.findViewById(R.id.btnDeviceEdit);
+        btn_add_device = view.findViewById(R.id.btn_add_device);
+
+        device_model_title = view.findViewById(R.id.device_model_title);
+        device_model_txt = view.findViewById(R.id.device_model_txt);
+        device_rtsp_title = view.findViewById(R.id.device_rtsp_title);
+        device_rtsp_txt = view.findViewById(R.id.device_rtsp_txt);
+        device_armed_title = view.findViewById(R.id.device_armed_title);
+        device_armed_txt = view.findViewById(R.id.device_armed_txt);
+        no_device_text = view.findViewById(R.id.no_device_text);
+
         device_connectivity = view.findViewById(R.id.device_connectivity);
-        device_model = view.findViewById(R.id.device_model);
-        device_rtsp = view.findViewById(R.id.device_rtsp);
+        no_device_image = view.findViewById(R.id.no_device_image);
 
         if(hasConnection) {
             loadCameraDetails();
-            btnDeleteDevice.setVisibility(View.VISIBLE);
+            setDevice_connectivity();
+            toggleVisibility(true);
+        }else{
+            toggleVisibility(false);
         }
 
+        btn_add_device.setOnClickListener(this);
+        btnDeviceEdit.setOnClickListener(this);
         btnDeleteDevice.setOnClickListener(this);
-        btnDeviceCancel.setOnClickListener(this);
-        btnDeviceConfirm.setOnClickListener(this);
-        test_connection.setOnClickListener(this);
         btnDeviceArm.setOnClickListener(this);
         return view;
     }
@@ -91,20 +110,10 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
                 deleteDevice();
                 break;
 
-            case R.id.btnDeviceCancel:
-                cancelChanges();
-                break;
+            case R.id.btnDeviceEdit:
 
-            case R.id.btnDeviceConfirm:
-                if(hasConnection){
-                    updateConnection();
-                }else{
-                    setupConnection();
-                }
-                break;
-
-            case R.id.test_connection:
-                testRtsp();
+            case R.id.btn_add_device:
+                navigateToSetupFragment();
                 break;
 
             case R.id.btnDeviceArm:
@@ -115,70 +124,45 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
 
     private void loadCameraDetails(){
         camera = preferenceManager.GetCamera();
-        device_model.getEditText().setText(camera.getModel());
-        device_rtsp.getEditText().setText(camera.getRtsp_address());
-        btnDeviceConfirm.setEnabled(true);
+        String armed = camera.isArmed() ? "True" : "False";
+        device_armed_txt.setText(armed);
+        device_model_txt.setText(camera.getModel());
+        device_rtsp_txt.setText(camera.getRtsp_address());
+    }
+
+    private void navigateToSetupFragment(){
+        NavDirections action = DeviceFragmentDirections.actionNavigationDevicesToDeviceSetupFragment();
+        Navigation.findNavController(view).navigate(action);
+    }
+
+    private void setDevice_connectivity(){
         if(testConnection(camera.getRtsp_address())==1){
             device_connectivity.setImageResource(R.drawable.connected);
             isConnected = true;
             if(camera.isArmed()){
-                btnDeviceConfirm.setEnabled(false);
+                btnDeviceArm.setVisibility(View.INVISIBLE);
             }
         }else{
             isConnected = false;
             device_connectivity.setImageResource(R.drawable.disconnected);
         }
     }
+
     private void createCallbacks(){
         deleteCameraCallback = new ResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                Toasty.success(getContext(),"Your IP device has been successfully removed", Toasty.LENGTH_SHORT).show();
+                Toasty.success(getContext(),"Your IP camera has been successfully removed", Toasty.LENGTH_SHORT).show();
                 preferenceManager.clearDeviceSettings();
-                device_model.getEditText().setText("");
-                device_rtsp.getEditText().setText("");
 
+                device_armed_txt.setText("");
+                device_model_txt.setText("");
+                device_rtsp_txt.setText("");
                 device_connectivity.setImageResource(R.drawable.disconnected);
-                hasConnection = preferenceManager.HasConnection();
+                toggleVisibility(false);
+
+                hasConnection = false;
                 isConnected = false;
-                btnDeleteDevice.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                Toasty.error(getContext(), "Server error. Try again later", Toast.LENGTH_SHORT).show();
-            }
-        };
-
-        updateCameraCallback = new ResponseCallback() {
-            @Override
-            public void onSuccess(Response response) {
-                Toasty.success(getContext(), "Your IP device has been successfully updated", Toasty.LENGTH_SHORT).show();
-                MessageResponse messageResponse = (MessageResponse) response.body();
-                device_connectivity.setImageResource(R.drawable.connected);
-                isConnected = true;
-                preferenceManager.UpdateDeviceDetails(cameraRequest);
-                camera = preferenceManager.GetCamera();
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                Toasty.error(getContext(), "Server error. Try again later", Toast.LENGTH_SHORT).show();
-                device_model.getEditText().setText(camera.getModel());
-                device_rtsp.getEditText().setText(camera.getRtsp_address());
-            }
-        };
-
-        setupCallBack = new ResponseCallback() {
-            @Override
-            public void onSuccess(Response response) {
-                Camera cameraResponse = (Camera) response.body();
-                device_connectivity.setImageResource(R.drawable.connected);
-                preferenceManager.StoreDeviceDetails(cameraResponse);
-                Toasty.success(getContext(), "Your IP device has been successfully setup", Toasty.LENGTH_SHORT).show();
-                btnDeleteDevice.setVisibility(View.VISIBLE);
-                hasConnection = true;
-                camera = preferenceManager.GetCamera();
             }
 
             @Override
@@ -192,6 +176,8 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
             public void onSuccess(Response response) {
                 Toasty.success(getContext(),"You are secured", Toasty.LENGTH_SHORT).show();
                 preferenceManager.ArmDevice(true);
+                loadCameraDetails();
+                btnDeviceArm.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -199,19 +185,6 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
                 Toasty.error(getContext(), "Server error. Try again later", Toast.LENGTH_SHORT).show();
             }
         };
-    }
-
-    private void cancelChanges(){
-        test_result.setVisibility(View.INVISIBLE);
-        if(preferenceManager.HasConnection()) {
-            device_model.getEditText().setText(camera.getModel());
-            device_rtsp.getEditText().setText(camera.getRtsp_address());
-        }else{
-            device_model.getEditText().setText("");
-            device_rtsp.getEditText().setText("");
-        }
-        device_model.setError(null);
-        device_rtsp.setError(null);
     }
 
     private void deleteDevice(){
@@ -225,7 +198,6 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                         cameraService.DeleteCamera(camera.getId(),deleteCameraCallback);
-                        test_result.setVisibility(View.INVISIBLE);
                     }
                 });
         mBuilder.setNegativeButton("No",
@@ -238,49 +210,6 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
         mAlertDialog.show();
     }
 
-    private CameraRequest extractFieldValues(){
-        test_result.setVisibility(View.INVISIBLE);
-        String model = device_model.getEditText().getText().toString();
-        String rtsp = device_rtsp.getEditText().getText().toString();
-        if(model.isEmpty() || rtsp.isEmpty()){
-            if(model.isEmpty()){
-                device_model.setError("Camera model cannot be blank");
-            }
-            if(rtsp.isEmpty()){
-                device_rtsp.setError("RTSP field cannot be blank");
-            }
-            Toasty.error(getContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
-            return null;
-        }else {
-            device_rtsp.setError(null);
-            device_model.setError(null);
-            return new CameraRequest(model, rtsp, accountId,false);
-        }
-    }
-    private void updateConnection(){
-            cameraRequest = extractFieldValues();
-            if(cameraRequest != null) {
-                int result = testConnection(cameraRequest.getRtsp_address());
-                cameraRequest.setArmed(camera.isArmed());
-                if(result==1){
-                    cameraService.UpdateCamera(cameraRequest, camera.getId(), updateCameraCallback);
-                }else if(result == -1){
-                    Toasty.error(getContext(),"Please make sure device is connected to the network",Toasty.LENGTH_SHORT).show();
-                }
-            }
-    }
-    private void setupConnection(){
-        cameraRequest = extractFieldValues();
-        cameraRequest.setArmed(false);
-        if(cameraRequest != null) {
-            int result = testConnection(cameraRequest.getRtsp_address());
-            if(result==1){
-                cameraService.SetupCamera(cameraRequest, setupCallBack);
-            }else if(result == -1){
-                Toasty.error(getContext(),"Please make sure device is connected to the network",Toasty.LENGTH_SHORT).show();
-            }
-        }
-    }
     private int testConnection(String rtsp_address){
         RTSP rtsp = extractPortAndIPAddress(rtsp_address);
         if(rtsp == null){
@@ -311,48 +240,45 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
         return connectionStatus[0];
     }
 
-    private RTSP extractPortAndIPAddress(String rtsp){
+    private RTSP extractPortAndIPAddress(String rtsp) {
         int port = -1;
         String ipAddress = "";
-        try {
-            port = Integer.parseInt(rtsp.substring(rtsp.lastIndexOf(":") + 1, rtsp.lastIndexOf("/")));
-            if (rtsp.contains("@")) {
-                ipAddress = rtsp.substring(rtsp.indexOf("@") + 1, rtsp.lastIndexOf(":"));
-            } else {
-                ipAddress = rtsp.substring(7, rtsp.lastIndexOf(":"));
-            }
-            return new RTSP(ipAddress,port);
-        } catch(Exception ex){
-            device_rtsp.setError("Invalid RTSP format");
-            Toasty.error(getContext(),"Invalid RTSP address format. Please follow the format",Toasty.LENGTH_SHORT).show();
-            return null;
+        port = Integer.parseInt(rtsp.substring(rtsp.lastIndexOf(":") + 1, rtsp.lastIndexOf("/")));
+        if (rtsp.contains("@")) {
+            ipAddress = rtsp.substring(rtsp.indexOf("@") + 1, rtsp.lastIndexOf(":"));
+        } else {
+            ipAddress = rtsp.substring(7, rtsp.lastIndexOf(":"));
         }
-    }
-
-    private void testRtsp(){
-        String rtsp = device_rtsp.getEditText().getText().toString();
-        device_rtsp.setError(null);
-        device_model.setError(null);
-        if(!rtsp.isEmpty()) {
-            test_result.setText("");
-            test_result.setVisibility(View.VISIBLE);
-            int result = testConnection(rtsp);
-            if (result == 1) {
-                test_result.setText("Connection established with the server");
-            } else {
-                test_result.setText("Connection failed to be established with the server");
-            }
-        }else{
-            device_rtsp.setError("RTSP field cannot be blank");
-            Toasty.error(getContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
-        }
+        return new RTSP(ipAddress, port);
     }
 
     private void armDevice(){
         if(preferenceManager.HasConnection() && isConnected){
             cameraService.ArmCamera(camera.getAccount_id(),armDeviceCallback);
         }else{
-            Toasty.error(getContext(),"A camera with stable connection required",Toasty.LENGTH_SHORT).show();
+            Toasty.error(getContext(),"Please make sure your device is connected to the network.",Toasty.LENGTH_SHORT).show();
+        }
+    }
+
+    private void toggleVisibility(boolean edit){
+        if(edit){
+            layout.setVisibility(View.VISIBLE);
+            btn_add_device.setVisibility(View.INVISIBLE);
+            no_device_image.setVisibility(View.INVISIBLE);
+            no_device_text.setVisibility(View.INVISIBLE);
+            if(!camera.isArmed()){
+                btnDeviceArm.setVisibility(View.VISIBLE);
+            }
+        }else{
+            layout.setVisibility(View.INVISIBLE);
+            Picasso.get()
+                    .load(no_device)
+                    .fit()
+                    .centerCrop()
+                    .into(no_device_image);
+            no_device_image.setVisibility(View.VISIBLE);
+            no_device_text.setVisibility(View.VISIBLE);
+            btn_add_device.setVisibility(View.VISIBLE);
         }
     }
 
