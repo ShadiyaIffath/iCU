@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import com.example.iffath.icu.Service.ContactsService;
 import com.example.iffath.icu.Service.Interface.CustomItemClickListener;
 import com.example.iffath.icu.Storage.SharedPreferenceManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +36,14 @@ public class ManageContactsFragment extends Fragment implements View.OnClickList
     ContactsService contactsService;
     RecyclerView recyclerView;
     FloatingActionButton btnNewContact;
-    TextView contacts_title;
+    TextView contacts_title, no_contacts_text;
+    ImageView no_contacts_image;
 
     View view;
     int accountId;
     int pos = 0;
     int size = 0;
+    String no_contacts;
     EmergencyContactAdapter recyclerAdapter;
     SharedPreferenceManager preferenceManager;
     ResponseCallback deleteContact;
@@ -56,12 +60,15 @@ public class ManageContactsFragment extends Fragment implements View.OnClickList
         preferenceManager = SharedPreferenceManager.getInstance(this.getContext());
         accountId = preferenceManager.GetLoggedInUserId();
         contacts = new ArrayList<>();
+        no_contacts = getContext().getString(R.string.notification);
         createCallBacks();
 
         //hooks
         btnNewContact = view.findViewById(R.id.add_contact_btn);
         recyclerView = view.findViewById(R.id.emergency_recycle);
         contacts_title = view.findViewById(R.id.contacts_title);
+        no_contacts_image = view.findViewById(R.id.no_contacts_image);
+        no_contacts_text = view.findViewById(R.id.no_contacts_text);
 
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
         btnNewContact.setOnClickListener(this);
@@ -99,6 +106,14 @@ public class ManageContactsFragment extends Fragment implements View.OnClickList
         String title = "#"+ size+ " emergency contacts";
         contacts_title.setText(title);
         if(contacts.size() == 0){
+            recyclerView.setVisibility(View.INVISIBLE);
+            no_contacts_image.setVisibility(View.VISIBLE);
+            Picasso.get()
+                    .load(no_contacts)
+                    .fit()
+                    .centerCrop()
+                    .into(no_contacts_image);
+            no_contacts_text.setVisibility(View.INVISIBLE);
             Toasty.info(getContext(), "0 emergency contacts", Toasty.LENGTH_SHORT).show();
         }else {
             recyclerAdapter = new EmergencyContactAdapter(getContext(), this);
@@ -112,6 +127,14 @@ public class ManageContactsFragment extends Fragment implements View.OnClickList
     public void onError(String errorMessage) {
         contacts_title.setVisibility(View.INVISIBLE);
         btnNewContact.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.INVISIBLE);
+        no_contacts_image.setVisibility(View.VISIBLE);
+        Picasso.get()
+                .load(no_contacts)
+                .fit()
+                .centerCrop()
+                .into(no_contacts_image);
+        no_contacts_text.setVisibility(View.VISIBLE);
         Toasty.error(getContext(), "Server error. Try again later", Toast.LENGTH_SHORT).show();
     }
 

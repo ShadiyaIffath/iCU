@@ -116,6 +116,7 @@ public class NotificationsFragment extends Fragment implements CustomItemClickLi
     public void onError(String errorMessage) {
         recyclerView.setVisibility(View.INVISIBLE);
         no_notification_image.setVisibility(View.VISIBLE);
+        no_notification_text.setText("Sorry, server error occurred");
         no_notification_text.setVisibility(View.VISIBLE);
         Picasso.get()
                 .load(no_notification)
