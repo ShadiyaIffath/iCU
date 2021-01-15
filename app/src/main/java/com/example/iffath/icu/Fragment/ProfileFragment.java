@@ -29,7 +29,7 @@ import retrofit2.Response;
 
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
-    TextInputLayout profile_firstName, profile_lastName, profile_address, profile_email, profile_phone, profile_new_password;
+    TextInputLayout profile_firstName, profile_lastName, profile_address, profile_email, profile_phone;
     MaterialButton btnProfile,btn_profile_delete;
     TextView profile_title;
 
@@ -52,7 +52,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         preferenceManager = SharedPreferenceManager.getInstance(getContext());
         account = preferenceManager.GetAccount();
-        accountService = new AccountService();
+        accountService = new AccountService(getContext());
         createCallbacks();
         //hooks
         profile_title = view.findViewById(R.id.profile_title);
@@ -61,7 +61,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         profile_email = view.findViewById(R.id.profile_email);
         profile_address = view.findViewById(R.id.profile_address);
         profile_phone = view.findViewById(R.id.profile_phone);
-        profile_new_password = view.findViewById(R.id.profile_new_password);
         btnProfile = view.findViewById(R.id.btnProfile);
         btn_profile_delete = view.findViewById(R.id.btn_profile_delete);
 
@@ -107,7 +106,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 profile_email.getEditText().setText(account.getEmail());
                 profile_address.getEditText().setText(account.getAddress());
                 profile_phone.getEditText().setText(String.valueOf(account.getPhone()));
-                profile_new_password.getEditText().setText("");
             }
         };
 
@@ -126,13 +124,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         };
     }
 
-    private void updateAccount(){
+    private void updateAccount() {
         String fName = profile_firstName.getEditText().getText().toString();
         String lName = profile_lastName.getEditText().getText().toString();
         String email = profile_email.getEditText().getText().toString();
         String phone = profile_phone.getEditText().getText().toString();
         String address = profile_address.getEditText().getText().toString();
-        String password = profile_new_password.getEditText().getText().toString();
 
         if (fName.isEmpty() || lName.isEmpty() || email.isEmpty() || phone.isEmpty() || address.isEmpty()) {
             if (fName.isEmpty()) {
@@ -147,25 +144,18 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             if (phone.isEmpty()) {
                 profile_phone.setError("Contact number cannot be blank");
             }
-            if(address.isEmpty()){
+            if (address.isEmpty()) {
                 profile_address.setError("Address cannot be blank");
             }
             Toasty.error(getContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
         } else {
-            editAccount = new AccountUpdateRequest(fName,lName,account.getEmail(),address,account.getPassword(),account.getDevice_id(), Integer.parseInt(phone));
-            if(!password.isEmpty() || !email.equals(account.getEmail())){
-                editAccount.setPassword(password);
-                editAccount.setEmail(email);
-            }else{
-                profile_firstName.setError(null);
-                profile_lastName.setError(null);
-                profile_firstName.setError(null);
-                profile_firstName.setError(null);
-                profile_firstName.setError(null);
-                profile_firstName.setError(null);
-                profile_firstName.setError(null);
-                accountService.UpdateAccount(editAccount,account.getId(),updateCallback);
-            }
+            editAccount = new AccountUpdateRequest(fName, lName, account.getEmail(), address, account.getPassword(), account.getDevice_id(), Integer.parseInt(phone));
+            profile_firstName.setError(null);
+            profile_lastName.setError(null);
+            profile_email.setError(null);
+            profile_phone.setError(null);
+            profile_address.setError(null);
+            accountService.UpdateAccount(editAccount, account.getId(), updateCallback);
         }
     }
 

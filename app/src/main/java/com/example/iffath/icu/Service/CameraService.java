@@ -1,5 +1,7 @@
 package com.example.iffath.icu.Service;
 
+import android.content.Context;
+
 import com.example.iffath.icu.Callback.CustomizeCallback;
 import com.example.iffath.icu.Callback.ResponseCallback;
 import com.example.iffath.icu.Client.RetrofitClient;
@@ -13,28 +15,30 @@ import retrofit2.Call;
 
 public class CameraService {
     ICameraService ICameraService;
+    Context mContext;
 
-    public CameraService(){
+    public CameraService(Context context){
         this.ICameraService = RetrofitClient.getRetrofitClientInstance().create(ICameraService.class);
+        this.mContext = context;
     }
 
     public void UpdateCamera(CameraRequest cameraRequest, int deviceId, ResponseCallback responseCallback){
         Call<MessageResponse> responseCall = this.ICameraService.EditCamera(deviceId,cameraRequest);
-        responseCall.enqueue(new CustomizeCallback<MessageResponse>(responseCallback));
+        responseCall.enqueue(new CustomizeCallback<MessageResponse>(responseCallback,mContext));
     }
 
     public void SetupCamera(CameraRequest cameraRequest,ResponseCallback responseCallback){
         Call<Camera> responseCall = this.ICameraService.SetupConnection(cameraRequest);
-        responseCall.enqueue(new CustomizeCallback<Camera>(responseCallback));
+        responseCall.enqueue(new CustomizeCallback<Camera>(responseCallback,mContext));
     }
 
     public void DeleteCamera(int deviceId, ResponseCallback responseCallback){
         Call<MessageResponse> responseCall = this.ICameraService.DeleteCamera(deviceId);
-        responseCall.enqueue(new CustomizeCallback<MessageResponse>(responseCallback));
+        responseCall.enqueue(new CustomizeCallback<MessageResponse>(responseCallback, mContext));
     }
 
     public void ArmCamera(int accountId,ResponseCallback responseCallback){
         Call<MessageResponse> responseCall = this.ICameraService.ArmCamera(accountId);
-        responseCall.enqueue(new CustomizeCallback<MessageResponse>(responseCallback));
+        responseCall.enqueue(new CustomizeCallback<MessageResponse>(responseCallback,mContext));
     }
 }

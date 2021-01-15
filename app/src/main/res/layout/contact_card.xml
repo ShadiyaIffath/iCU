@@ -1,22 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="145dp"
+    android:layout_height="70dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
+    android:id="@+id/contact_card"
     android:elevation="15dp"
-    android:layout_margin="15dp"
+    android:layout_margin="10dp"
     app:cardCornerRadius="15dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="15dp">
+        android:layout_margin="10dp">
+
+        <ImageView
+            android:id="@+id/contact_user_image"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/user"/>
     <TextView
         android:id="@+id/contact_name"
+        android:layout_marginStart="35dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/aladin"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/contact_user_image"
         android:text="Shadiya Iffath"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -26,68 +37,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
+            android:layout_centerVertical="true"
             android:text="cousin"
             android:textColor="@color/secondary"
             android:fontFamily="@font/aladin"
             android:textSize="24sp"
             android:layout_toEndOf="@id/contact_name"/>
 
-    <ImageView
-        android:id="@+id/phone_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contact_name"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/phone"/>
-
-        <TextView
-            android:id="@+id/contact_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="5dp"
-            android:layout_below="@id/contact_name"
-            android:layout_toEndOf="@id/phone_image"
-            android:text="0766065920"/>
-
-    <ImageView
-        android:id="@+id/email_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_below="@id/phone_image"
-        android:background="@drawable/email_icon"/>
-
-        <TextView
-            android:id="@+id/contact_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="shadiya.iffath98@gmail.com"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_below="@id/phone_image"
-            android:layout_toEndOf="@id/email_icon"/>
-
         <ImageButton
-            android:id="@+id/edit_contact"
-            android:layout_width="45dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/edit"
-            android:layout_above="@id/delete_contact"
-            android:elevation="15dp"
+            android:id="@+id/contact_call"
+            android:src="@drawable/phone"
             android:backgroundTint="@color/blue"
-            android:layout_alignParentEnd="true"/>
-
-            <ImageButton
-                android:layout_marginTop="5dp"
-                android:id="@+id/delete_contact"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:src="@drawable/trash"
-                android:backgroundTint="@color/light_grey"
-                android:elevation="15dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"/>
+            android:background="@drawable/round_buttons"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="0dp"
+            android:elevation="5dp"
+            android:layout_centerVertical="true"
+            android:layout_width="45dp"
+            android:layout_height="45dp"/>
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

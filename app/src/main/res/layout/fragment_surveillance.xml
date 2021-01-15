@@ -17,7 +17,8 @@
         android:text="Your IP Camera"
         android:textAlignment="center"
         android:textColor="@color/dark"
-        android:textSize="24sp" />
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/surveillance_ip"
@@ -31,16 +32,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textUri"
+            android:background="@color/lightest_blue"
             android:enabled="false"
             android:text="rtsp://168.12.5:8080/sp"
             android:textAlignment="center" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <LinearLayout
+        android:id="@+id/surveillance_burglar"
+        android:layout_below="@id/surveillance_ip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="45dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/dark"
+        android:text="@string/burglar_detection"
+        android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/surveillance_burglar_detection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
     <org.videolan.libvlc.util.VLCVideoLayout
         android:id="@+id/surveillance_live"
-        android:layout_below="@id/surveillance_ip"
+        android:layout_below="@id/surveillance_burglar"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="match_parent"
         android:fitsSystemWindows="false"/>
 
 

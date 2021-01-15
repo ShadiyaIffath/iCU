@@ -11,8 +11,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.iffath.icu.Fragment.ManageContactsFragmentDirections;
 import com.example.iffath.icu.Model.EmergencyContact;
 import com.example.iffath.icu.R;
 import com.example.iffath.icu.Service.Interface.CustomItemClickListener;
@@ -44,19 +48,25 @@ public class EmergencyContactAdapter extends RecyclerView.Adapter<EmergencyConta
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final EmergencyContact contact = contactList.get(position);
         holder.contact_name.setText(contact.getName());
-        holder.contact_email.setText(contact.getEmail());
-        holder.contact_number.setText(String.valueOf(contact.getPhone()));
         holder.contact_nickname.setText(contact.getNickname());
         setFadeAnimation(holder.itemView);
 
-        holder.edit_contact.setOnClickListener(new View.OnClickListener() {
+        holder.call_contact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.onItemClick(view, holder.getAdapterPosition());
             }
         });
 
-        holder.delete_contact.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.contact_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavDirections action = ManageContactsFragmentDirections.actionNavigationContactsToEmergencyContactFragment(contact,true);
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
+
+        holder.contact_card.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {        //remove clothing item from cart
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(v.getContext());
@@ -117,16 +127,15 @@ public class EmergencyContactAdapter extends RecyclerView.Adapter<EmergencyConta
     public EmergencyContact getContact(int position){ return this.contactList.get(position);}
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView contact_name,contact_number,contact_email,contact_nickname;
-        ImageButton edit_contact,delete_contact;
+        TextView contact_name,contact_nickname;
+        ImageButton call_contact;
+        CardView contact_card;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             contact_name = itemView.findViewById(R.id.contact_name);
             contact_nickname = itemView.findViewById(R.id.contact_nickname);
-            contact_number = itemView.findViewById(R.id.contact_number);
-            contact_email = itemView.findViewById(R.id.contact_email);
-            edit_contact = itemView.findViewById(R.id.edit_contact);
-            delete_contact = itemView.findViewById(R.id.delete_contact);
+            call_contact = itemView.findViewById(R.id.contact_call);
+            contact_card = itemView.findViewById(R.id.contact_card);
         }
     }
 }

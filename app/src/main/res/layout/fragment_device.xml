@@ -26,7 +26,7 @@
             android:transitionName="logo_image"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/logo_transparent"/>
+            android:src="@drawable/splash"/>
     <TextView
         android:id="@+id/device_user"
         android:layout_width="wrap_content"
@@ -94,7 +94,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/device_rtsp_title"
-        android:text="Burglar Detection Enabled:"
+        android:text="@string/burglar_detection"
         android:layout_marginTop="20dp"
         android:layout_marginStart="15dp"
         android:textColor="@color/black"/>

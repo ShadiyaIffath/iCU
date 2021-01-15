@@ -76,6 +76,7 @@
         <!-- End Pushy Declarations -->
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permision.CALL_PHONE"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
 
     <!-- Pushy Permissions -->

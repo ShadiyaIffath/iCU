@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Resp
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
         preferenceManager = SharedPreferenceManager.getInstance(getContext());
-        accountService = new AccountService();
+        accountService = new AccountService(getContext());
 
         //hooks
         btnHomeSurveillance = view.findViewById(R.id.btnHomeSurveillance);
@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Resp
     @Override
     public void onClick(View view) {
         NavDirections action;
-        if(hasConnection || !connectionStatus){
+        if(hasConnection && !connectionStatus){
             action = HomeFragmentDirections.actionNavigationHomeToDeviceSetupFragment(true);
         }
         else{

@@ -40,6 +40,7 @@ public class SurveillanceFragment extends Fragment {
 
     private VLCVideoLayout mVideoLayout = null;
     TextInputLayout ipAddress;
+    TextView burglar_detection;
 
     private LibVLC mLibVLC = null;
     private MediaPlayer mMediaPlayer = null;
@@ -55,10 +56,12 @@ public class SurveillanceFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_surveillance, container, false);
         preferenceManager = SharedPreferenceManager.getInstance(getContext());
         cameraIP = preferenceManager.GetCamera().getRtsp_address();
+        String detecting = preferenceManager.GetCamera().isArmed() ? "Enabled":"Disabled";
 
+        burglar_detection = view.findViewById(R.id.surveillance_burglar_detection);
         mVideoLayout = view.findViewById(R.id.surveillance_live);
         ipAddress = view.findViewById(R.id.surveillance_ip);
-
+        burglar_detection.setText(detecting);
         final ArrayList<String> args = new ArrayList<>();
         args.add("--vout=android-display");
         args.add("-vvv");

@@ -88,10 +88,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public String getLocalDateTimeString(String dateTime){
         Date dt = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
         try {
-            sdf.setTimeZone(TimeZone.getDefault());
             dt = df.parse(dateTime);
+            sdf.setTimeZone(TimeZone.getDefault());
             return sdf.format(dt);
         }catch (ParseException e) {
             e.printStackTrace();

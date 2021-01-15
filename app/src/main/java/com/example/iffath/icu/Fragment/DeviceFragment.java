@@ -59,7 +59,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_device, container, false);
         preferenceManager = SharedPreferenceManager.getInstance(getContext());
-        cameraService = new CameraService();
+        cameraService = new CameraService(getContext());
         accountId = preferenceManager.GetLoggedInUserId();
         hasConnection = preferenceManager.HasConnection();
         no_device = getContext().getString(R.string.notification);

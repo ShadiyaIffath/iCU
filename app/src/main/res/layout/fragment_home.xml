@@ -15,15 +15,14 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_above="@id/btnHomeSurveillance"
-        android:layout_marginBottom="55dp"
+        android:layout_marginBottom="30dp"
         app:cardCornerRadius="15dp"
         android:elevation="15dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:background="@drawable/bg"
-            android:padding="10dp">
+            android:layout_height="120dp"
+            android:padding="5dp">
 
             <TextView
                 android:id="@+id/home_about_us"
@@ -54,8 +53,8 @@
         android:id="@+id/btnHomeSurveillance"
         android:clickable="true"
         android:focusable="true"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_centerInParent="true"
         android:background="@drawable/connected_ring" />
 
@@ -66,7 +65,7 @@
         android:fontFamily="@font/aladin"
         android:layout_centerInParent="true"
         android:textColor="@color/white"
-        android:text="Configure Device"
+        android:text="Setup Device"
         android:textAlignment="center"
         android:textSize="28sp" />
 
@@ -76,12 +75,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/btnHomeSurveillance"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="10dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="15dp">
+        android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -91,15 +90,17 @@
 
     <ImageView
         android:id="@+id/home_camera_indicator"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
         android:layout_marginStart="5dp"
+        android:layout_gravity="center_vertical"
         android:src="@drawable/red_circle" />
 
         <TextView
             android:id="@+id/home_connection_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
             android:text="No device"/>
 
@@ -121,15 +122,20 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingStart="10dp"
             android:paddingEnd="10dp">
-
+            <ImageView
+                android:id="@+id/home_alert_image"
+                android:layout_width="75dp"
+                android:layout_height="match_parent"
+                android:elevation="-10dp"
+                android:background="@drawable/alert"/>
             <TextView
                 android:id="@+id/home_alert_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/home_alert_image"
                 android:fontFamily="@font/aref_ruqaa"
                 android:text="@string/burglar_alerts"
                 android:textAlignment="center"
@@ -142,20 +148,15 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:layout_marginBottom="5dp"
+                android:layout_marginStart="40dp"
+                android:layout_toEndOf="@id/home_alert_image"
                 android:textColor="@color/dark"
+                android:gravity="center"
                 android:text="0"
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
         </RelativeLayout>
-        <ImageView
-            android:layout_width="75dp"
-            android:layout_height="match_parent"
-            android:elevation="-10dp"
-            android:background="@drawable/alert"/>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -169,17 +170,22 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp">
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/home_contacts_image"
+                android:layout_width="75dp"
+                android:layout_height="match_parent"
+                android:elevation="-1dp"
+                android:background="@drawable/emergency"/>
 
             <TextView
                 android:id="@+id/home_contacts_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/aref_ruqaa"
-                android:layout_marginTop="15dp"
-                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@id/home_contacts_image"
                 android:text="@string/emergency_contacts"
                 android:textAlignment="center"
                 android:textColor="@color/darker_blue"
@@ -191,19 +197,14 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="55dp"
+                android:layout_toEndOf="@id/home_contacts_image"
                 android:gravity="center"
-                android:layout_marginBottom="5dp"
+                android:layout_marginStart="35dp"
                 android:textColor="@color/dark"
                 android:text="0"
                 android:textSize="25sp"
                 android:textStyle="bold" />
         </RelativeLayout>
-        <ImageView
-            android:layout_width="75dp"
-            android:layout_height="match_parent"
-            android:elevation="-1dp"
-            android:background="@drawable/emergency"/>
     </androidx.cardview.widget.CardView>
     </LinearLayout>
 

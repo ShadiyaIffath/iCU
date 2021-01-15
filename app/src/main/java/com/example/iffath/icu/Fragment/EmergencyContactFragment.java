@@ -49,7 +49,7 @@ public class EmergencyContactFragment extends Fragment implements View.OnClickLi
         view = inflater.inflate(R.layout.fragment_emergency_contact, container, false);
         preferenceManager = SharedPreferenceManager.getInstance(this.getContext());
         accountId = preferenceManager.GetLoggedInUserId();
-        contactsService = new ContactsService();
+        contactsService = new ContactsService(getContext());
         createCallBacks();
 
         //hooks

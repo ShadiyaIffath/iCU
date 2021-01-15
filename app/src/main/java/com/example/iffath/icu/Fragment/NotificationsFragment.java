@@ -57,7 +57,7 @@ public class NotificationsFragment extends Fragment implements CustomItemClickLi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_notifications, container, false);
-        notificationService = new NotificationService();
+        notificationService = new NotificationService(getContext());
         df = new SimpleDateFormat(pattern);
         createCallBacks();
 

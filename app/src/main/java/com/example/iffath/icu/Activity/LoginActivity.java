@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Pushy.listen(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
-        authenticationService = new AuthenticationService();
+        authenticationService = new AuthenticationService(this);
 
         //hooks
         splash = findViewById(R.id.login_image);

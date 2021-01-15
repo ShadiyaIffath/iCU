@@ -61,7 +61,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         register.setOnClickListener(this);
         callSignIn.setOnClickListener(this);
 
-        authenticationService = new AuthenticationService();
+        authenticationService = new AuthenticationService(this);
     }
 
     @Override

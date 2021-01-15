@@ -9,7 +9,7 @@
 
     <item>
         <shape
-            android:innerRadius="85dp"
+            android:innerRadius="110dp"
             android:shape="ring"
             android:thickness="6dp"
             android:useLevel="false">
@@ -24,7 +24,7 @@
 
     <item>
         <shape
-            android:innerRadius="95dp"
+            android:innerRadius="120dp"
             android:shape="ring"
             android:thickness="3dp"
             android:useLevel="false">

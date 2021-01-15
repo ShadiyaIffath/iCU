@@ -1,5 +1,7 @@
 package com.example.iffath.icu.Fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -56,7 +58,7 @@ public class ManageContactsFragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_manage_contacts, container, false);
-        contactsService = new ContactsService();
+        contactsService = new ContactsService(getContext());
         preferenceManager = SharedPreferenceManager.getInstance(this.getContext());
         accountId = preferenceManager.GetLoggedInUserId();
         contacts = new ArrayList<>();
@@ -86,15 +88,14 @@ public class ManageContactsFragment extends Fragment implements View.OnClickList
     @Override
     public void onItemClick(View v, int position) {
         switch (v.getId()){
-            case R.id.delete_contact:
+            case R.id.contact_card:
                 pos = position;
                 contactsService.DeleteContact(recyclerAdapter.getContact(position).getId(),deleteContact);
                 break;
 
-            case R.id.edit_contact:
+            case R.id.contact_call:
                 EmergencyContact contact = recyclerAdapter.getContact(position);
-                NavDirections action = ManageContactsFragmentDirections.actionNavigationContactsToEmergencyContactFragment(contact,true);
-                Navigation.findNavController(view).navigate(action);
+                dialNumber(String.valueOf(contact.getPhone()));
                 break;
         }
     }
@@ -154,5 +155,9 @@ public class ManageContactsFragment extends Fragment implements View.OnClickList
                 Toasty.error(getContext(), "Server error. Try again later", Toast.LENGTH_SHORT).show();
             }
         };
+    }
+
+    private void dialNumber(final String contactNumber) { //method which is used to create an intent service to make the call
+        startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", contactNumber, null)));
     }
 }

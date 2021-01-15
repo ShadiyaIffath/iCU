@@ -37,7 +37,7 @@ public class RegisterForPushNotificationsAsync extends AsyncTask<Void, Void, Obj
             Log.d(TAG, "Pushy device token: " + deviceToken);
 
             preferenceManager = SharedPreferenceManager.getInstance(mActivity.getApplicationContext());
-            accountService = new AccountService();
+            accountService = new AccountService(mActivity.getApplicationContext());
             createCallback();
 
             accountService.RegisterDevice(new PushyRegisterIdRequest(accountId,deviceToken),responseCallback);
