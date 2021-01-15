@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -44,6 +45,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(this.context);
         df = new SimpleDateFormat(pattern);
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
         viewAdp = inflater.inflate(R.layout.notification_card,parent,false); //create new card for each product
         return new NotificationAdapter.ViewHolder(viewAdp);
     }

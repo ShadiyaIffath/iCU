@@ -9,53 +9,14 @@
     android:padding="15dp"
     tools:context=".Fragment.HomeFragment">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/home_about_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/btnHomeSurveillance"
-        android:layout_marginBottom="30dp"
-        app:cardCornerRadius="15dp"
-        android:elevation="15dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/home_about_us"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:fontFamily="@font/aref_ruqaa"
-                android:text="@string/about_us"
-                android:textAlignment="center"
-                android:textColor="@color/darker_blue"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/home_about_us"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="5dp"
-                android:textColor="@color/dark"
-                android:text="@string/about_us_detail"
-                android:textAlignment="center" />
-
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-
     <ImageButton
         android:id="@+id/btnHomeSurveillance"
         android:clickable="true"
         android:focusable="true"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_centerInParent="true"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true"
         android:background="@drawable/connected_ring" />
 
     <TextView
@@ -63,11 +24,12 @@
         android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/aladin"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="185dp"
         android:textColor="@color/white"
         android:text="Setup Device"
-        android:textAlignment="center"
-        android:textSize="28sp" />
+        android:gravity="center"
+        android:textSize="36sp" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/home_connection_status"
@@ -109,8 +71,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginTop="30dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="25dp"
         android:layout_below="@id/home_connection_status">
     <androidx.cardview.widget.CardView
         android:id="@+id/home_alert_layout"
@@ -145,15 +107,17 @@
 
             <TextView
                 android:id="@+id/home_alert_count"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="40dp"
+                android:layout_marginStart="45dp"
                 android:layout_toEndOf="@id/home_alert_image"
+                android:layout_centerHorizontal="true"
                 android:textColor="@color/dark"
                 android:gravity="center"
+                android:layout_marginBottom="25dp"
                 android:text="0"
-                android:textSize="25sp"
+                android:textSize="45sp"
                 android:textStyle="bold" />
 
         </RelativeLayout>
@@ -194,15 +158,17 @@
 
             <TextView
                 android:id="@+id/home_contacts_count"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_toEndOf="@id/home_contacts_image"
+                android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:layout_marginStart="35dp"
+                android:layout_marginStart="40dp"
                 android:textColor="@color/dark"
+                android:layout_marginBottom="25dp"
                 android:text="0"
-                android:textSize="25sp"
+                android:textSize="45sp"
                 android:textStyle="bold" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
