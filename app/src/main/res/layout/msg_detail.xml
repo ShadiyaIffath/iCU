@@ -67,8 +67,7 @@
                     android:layout_centerHorizontal="true"
                     android:clickable="true"
                     android:focusable="true"
-                    android:backgroundTint="@color/blue"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:text="Ok"/>
             </RelativeLayout>
         </RelativeLayout>

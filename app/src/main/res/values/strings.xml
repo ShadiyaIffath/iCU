@@ -21,13 +21,13 @@
     <string name="title_sign_out">Sign Out</string>
     <string name="profile">Profile</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="about_us">About Us</string>
+    <string name="about_us">About us</string>
     <string name="about_us_detail">Our mission is to protect you and your family. We connect you to your camera from anywhere in the world. An immediate alert is sent if we detect suspicious behavior.</string>
     <string name="status">Status:</string>
     <string name="connected">Connected</string>
-    <string name="burglar_alerts">Burglar Alerts</string>
+    <string name="burglar_alerts">Burglar alerts</string>
     <string name="number_of_alerts_for_this_month">Number of alerts for this month</string>
-    <string name="emergency_contacts">Emergency Contacts</string>
+    <string name="emergency_contacts">Emergency contacts</string>
     <string name="burglar_alerts_count">Number of people we alert for you</string>
     <string name="view_surveillance">View Surveillance</string>
     <string name="confirm">Confirm</string>

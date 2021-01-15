@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.iffath.icu.R;
+import com.example.iffath.icu.Storage.SharedPreferenceManager;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.videolan.libvlc.LibVLC;
@@ -34,7 +35,8 @@ public class SurveillanceFragment extends Fragment {
     private static final boolean USE_TEXTURE_VIEW = false;
     private static final boolean ENABLE_SUBTITLES = false;
 
-    String cameraIP= "rtsp://112.135.254.157:8080/h264_ulaw.sdp";
+    SharedPreferenceManager preferenceManager;
+    String cameraIP= "";
 
     private VLCVideoLayout mVideoLayout = null;
     TextInputLayout ipAddress;
@@ -51,6 +53,8 @@ public class SurveillanceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_surveillance, container, false);
+        preferenceManager = SharedPreferenceManager.getInstance(getContext());
+        cameraIP = preferenceManager.GetCamera().getRtsp_address();
 
         mVideoLayout = view.findViewById(R.id.surveillance_live);
         ipAddress = view.findViewById(R.id.surveillance_ip);

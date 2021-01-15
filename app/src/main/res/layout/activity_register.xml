@@ -12,9 +12,10 @@
         android:id="@+id/register_logo"
         android:layout_width="150dp"
         android:layout_height="150dp"
+        android:layout_marginTop="15dp"
         android:transitionName="logo_image"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/logo_transparent"/>
+        android:src="@drawable/splash"/>
 
     <TextView
         android:id="@+id/register_welcome"

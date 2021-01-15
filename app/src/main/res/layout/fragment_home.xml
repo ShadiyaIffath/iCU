@@ -5,237 +5,206 @@
     android:id="@+id/parentHome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp"
     android:background="@color/light_grey"
+    android:padding="15dp"
     tools:context=".Fragment.HomeFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/home_about_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:elevation="45dp">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:background="@drawable/bg"
-        android:padding="10dp">
-
-        <TextView
-            android:id="@+id/home_about_us"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="@font/aref_ruqaa"
-            android:text="@string/about_us"
-            android:textAlignment="center"
-            android:textColor="@color/dark"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-    <TextView
-        android:layout_below="@id/home_about_us"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_margin="5dp"
-        android:textColor="@color/black"
-        android:textAlignment="center"
-        android:text="@string/about_us_detail"/>
-
-    </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/home_camera_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/home_about_layout"
-        android:layout_marginTop="20dp"
-        android:elevation="45dp"
->
+        android:layout_above="@id/btnHomeSurveillance"
+        android:layout_marginBottom="55dp"
+        app:cardCornerRadius="15dp"
+        android:elevation="15dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="115dp"
-            android:background="@drawable/home_ip"
+            android:layout_height="130dp"
+            android:background="@drawable/bg"
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/home_camera_title"
+                android:id="@+id/home_about_us"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="5dp"
                 android:fontFamily="@font/aref_ruqaa"
-                android:text="@string/ip_camera"
+                android:text="@string/about_us"
                 android:textAlignment="center"
+                android:textColor="@color/darker_blue"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/home_about_us"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
                 android:textColor="@color/dark"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/home_camera_title"
-                android:text="@string/status"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/home_camera_indicator"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:src="@drawable/disconnected"
-                android:layout_marginEnd="15dp"
-                android:layout_toStartOf="@id/home_camera_status"
-                android:layout_below="@id/home_camera_title"/>
-
-            <TextView
-                android:id="@+id/home_camera_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/connected"
-                android:textColor="@color/black"
-                android:layout_below="@id/home_camera_title"
-                android:layout_alignParentEnd="true"/>
-
-            <TextView
-                android:id="@+id/home_camera_error"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/home_camera_status"
-                android:layout_marginTop="10dp"
-                android:text="You have not setup your device yet. Please set up device so we can help you."
-                android:textColor="@color/red"
-                android:textSize="12sp" />
+                android:text="@string/about_us_detail"
+                android:textAlignment="center" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
+    <ImageButton
+        android:id="@+id/btnHomeSurveillance"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/connected_ring" />
+
+    <TextView
+        android:id="@+id/home_camera_txt"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/aladin"
+        android:layout_centerInParent="true"
+        android:textColor="@color/white"
+        android:text="Configure Device"
+        android:textAlignment="center"
+        android:textSize="28sp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/home_connection_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnHomeSurveillance"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/darker_blue"
+            android:text="Camera status: "/>
+
+    <ImageView
+        android:id="@+id/home_camera_indicator"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="5dp"
+        android:src="@drawable/red_circle" />
+
+        <TextView
+            android:id="@+id/home_connection_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="No device"/>
+
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/home_connection_status">
     <androidx.cardview.widget.CardView
         android:id="@+id/home_alert_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/home_camera_layout"
-        android:layout_marginTop="20dp"
-        android:elevation="45dp">
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:elevation="15dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="110dp"
-            android:background="@drawable/alert"
-            android:padding="10dp">
+            android:layout_height="match_parent"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp">
 
             <TextView
                 android:id="@+id/home_alert_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="5dp"
                 android:fontFamily="@font/aref_ruqaa"
                 android:text="@string/burglar_alerts"
                 android:textAlignment="center"
-                android:textColor="@color/dark"
-                android:textSize="24sp"
+                android:textColor="@color/darker_blue"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/home_alert_count"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_below="@id/home_alert_title"
-                android:layout_marginStart="55dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:text="5"
-                android:textColor="@color/black"
-                android:textSize="36sp"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/dark"
+                android:text="0"
+                android:textSize="25sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/home_alert_title"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/black"
-                android:layout_toEndOf="@id/home_alert_count"
-                android:text="@string/number_of_alerts_for_this_month"
-                android:textAlignment="center" />
         </RelativeLayout>
         <ImageView
-            android:layout_width="25dp"
+            android:layout_width="75dp"
             android:layout_height="match_parent"
-            android:elevation="15dp"
-            android:background="@color/red"/>
+            android:elevation="-10dp"
+            android:background="@drawable/alert"/>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/home_contacts_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/home_alert_layout"
-        android:layout_marginTop="20dp"
-        android:elevation="45dp">
+        android:layout_height="match_parent"
+        android:layout_marginStart="15dp"
+        android:layout_weight="1"
+        android:elevation="15dp">
 
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="110dp"
-            android:background="@drawable/emergency"
-            android:padding="10dp">
+            android:layout_height="match_parent"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp">
 
             <TextView
                 android:id="@+id/home_contacts_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="5dp"
                 android:fontFamily="@font/aref_ruqaa"
+                android:layout_marginTop="15dp"
+                android:layout_centerHorizontal="true"
                 android:text="@string/emergency_contacts"
                 android:textAlignment="center"
-                android:textColor="@color/dark"
-                android:textSize="24sp"
+                android:textColor="@color/darker_blue"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/home_contacts_count"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_below="@id/home_contacts_title"
+                android:layout_alignParentBottom="true"
                 android:layout_marginStart="55dp"
                 android:gravity="center"
-                android:textColor="@color/black"
-                android:text="5"
-                android:textSize="36sp"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/dark"
+                android:text="0"
+                android:textSize="25sp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/home_contacts_title"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="15dp"
-                android:textColor="@color/black"
-                android:layout_toEndOf="@id/home_contacts_count"
-                android:text="@string/burglar_alerts_count"
-                android:textAlignment="center" />
         </RelativeLayout>
         <ImageView
-            android:layout_width="25dp"
+            android:layout_width="75dp"
             android:layout_height="match_parent"
-            android:elevation="15dp"
-            android:background="@color/teal_200"/>
+            android:elevation="-1dp"
+            android:background="@drawable/emergency"/>
     </androidx.cardview.widget.CardView>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/home_view_live_btn"
-        android:layout_marginTop="15dp"
-        android:layout_below="@id/home_contacts_layout"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:elevation="15dp"
-        android:textColor="@color/white"
-        android:text="@string/view_surveillance"/>
+    </LinearLayout>
 
 </RelativeLayout>

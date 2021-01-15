@@ -35,7 +35,7 @@ public class DeviceSetupFragment extends Fragment implements View.OnClickListene
     SharedPreferenceManager preferenceManager;
     ResponseCallback updateCameraCallback, setupCallBack;
     int accountId;
-    boolean hasConnection,isConnected = false;
+    boolean hasConnection,isHome= false;
 
     CameraService cameraService;
     CameraRequest cameraRequest;
@@ -64,6 +64,12 @@ public class DeviceSetupFragment extends Fragment implements View.OnClickListene
         device_model = view.findViewById(R.id.device_model);
         device_rtsp = view.findViewById(R.id.device_rtsp);
 
+        //data retrieval
+        Bundle bundle = this.getArguments();
+        if(bundle != null) {
+            isHome = bundle.getBoolean("isHome");
+        }
+
         if(hasConnection){
             loadCameraDetails();
         }
@@ -77,7 +83,7 @@ public class DeviceSetupFragment extends Fragment implements View.OnClickListene
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.btnDeviceCancel:
-                cancelChanges();
+                navigateBack();
                 break;
 
             case R.id.btnDeviceConfirm:
@@ -103,7 +109,7 @@ public class DeviceSetupFragment extends Fragment implements View.OnClickListene
             public void onSuccess(Response response) {
                 Toasty.success(getContext(), "Your IP device has been successfully updated", Toasty.LENGTH_SHORT).show();
                 preferenceManager.UpdateDeviceDetails(cameraRequest);
-                navigateToDeviceFragment();
+                navigateBack();
             }
 
             @Override
@@ -120,7 +126,7 @@ public class DeviceSetupFragment extends Fragment implements View.OnClickListene
                 Camera cameraResponse = (Camera) response.body();
                 preferenceManager.StoreDeviceDetails(cameraResponse);
                 Toasty.success(getContext(), "Your IP device has been successfully setup", Toasty.LENGTH_SHORT).show();
-                navigateToDeviceFragment();
+                navigateBack();
             }
 
             @Override
@@ -130,8 +136,14 @@ public class DeviceSetupFragment extends Fragment implements View.OnClickListene
         };
     }
 
-    private void cancelChanges() {
-        navigateToDeviceFragment();
+    private void navigateBack() {
+        NavDirections action;
+        if(isHome){
+            action = DeviceSetupFragmentDirections.actionDeviceSetupFragmentToNavigationHome();
+        }else {
+            action = DeviceSetupFragmentDirections.actionDeviceSetupFragmentToNavigationDevices();
+        }
+        Navigation.findNavController(view).navigate(action);
     }
 
     private CameraRequest extractFieldValues(){
@@ -187,7 +199,7 @@ public class DeviceSetupFragment extends Fragment implements View.OnClickListene
             public void run() {
                 try {
                     Socket socket = new Socket();
-                    socket.connect(new InetSocketAddress(rtsp.getRtsp(), rtsp.getPort()), 1000);
+                    socket.connect(new InetSocketAddress(rtsp.getIpAddress(), rtsp.getPort()), 1000);
                     socket.close();
                     connectionStatus[0] = 1;
                 } catch (Exception ex) {
@@ -224,8 +236,4 @@ public class DeviceSetupFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    private void navigateToDeviceFragment(){
-        NavDirections action = DeviceSetupFragmentDirections.actionDeviceSetupFragmentToNavigationDevices();
-        Navigation.findNavController(view).navigate(action);
-    }
 }

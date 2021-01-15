@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -16,9 +17,17 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.iffath.icu.Callback.ResponseCallback;
+import com.example.iffath.icu.DTO.Response.HomeResponse;
+import com.example.iffath.icu.Model.Camera;
+import com.example.iffath.icu.Model.RTSP;
 import com.example.iffath.icu.R;
+import com.example.iffath.icu.Service.AccountService;
+import com.example.iffath.icu.Service.CameraService;
+import com.example.iffath.icu.Storage.SharedPreferenceManager;
 import com.google.android.material.button.MaterialButton;
 import com.squareup.picasso.Picasso;
 
@@ -28,16 +37,19 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import es.dmoral.toasty.Toasty;
+import retrofit2.Response;
 
-public class HomeFragment extends Fragment implements View.OnClickListener {
-    MaterialButton viewLiveBtn;
-    TextView contact_count,camera_error,alert_count;
+public class HomeFragment extends Fragment implements View.OnClickListener, ResponseCallback {
+    ImageButton btnHomeSurveillance;
+    TextView contact_count,home_camera_txt,alert_count,home_connection_text;
     ImageView connected;
-    View v;
-    int port = -1;
-    String ipAddress = "";
-    String cameraIP= "rtsp://112.135.254.157:8080/video";
-    boolean connectionStatus = false;
+    CardView home_alert_layout,home_contacts_layout;
+    View view;
+
+    AccountService accountService;
+    SharedPreferenceManager preferenceManager;
+
+    boolean connectionStatus,hasConnection,isArmed = false;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -47,30 +59,66 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        v = view;
+        view = inflater.inflate(R.layout.fragment_home, container, false);
+        preferenceManager = SharedPreferenceManager.getInstance(getContext());
+        accountService = new AccountService();
+
         //hooks
-        viewLiveBtn = view.findViewById(R.id.home_view_live_btn);
-        camera_error = view.findViewById(R.id.home_camera_error);
+        btnHomeSurveillance = view.findViewById(R.id.btnHomeSurveillance);
+        home_camera_txt = view.findViewById(R.id.home_camera_txt);
         connected = view.findViewById(R.id.home_camera_indicator);
+        home_connection_text = view.findViewById(R.id.home_connection_text);
         contact_count = view.findViewById(R.id.home_contacts_count);
         alert_count = view.findViewById(R.id.home_alert_count);
-        viewLiveBtn.setEnabled(false);
+        home_contacts_layout = view.findViewById(R.id.home_contacts_layout);
+        home_alert_layout = view.findViewById(R.id.home_alert_layout);
 
-        extractPortAndIP();
-        validateIP();
-
-        viewLiveBtn.setOnClickListener(this);
+        if(preferenceManager.HasConnection()){
+            btnHomeSurveillance.setEnabled(false);
+            hasConnection = true;
+            validateIP(preferenceManager.GetCamera().getRtsp_address());
+        }
+        setConnectionDetails();
+        btnHomeSurveillance.setOnClickListener(this);
+        accountService.HomeDetails(preferenceManager.GetLoggedInUserId(), this);
         return view;
     }
 
-    private void validateIP() {
+    @Override
+    public void onClick(View view) {
+        NavDirections action;
+        if(hasConnection || !connectionStatus){
+            action = HomeFragmentDirections.actionNavigationHomeToDeviceSetupFragment(true);
+        }
+        else{
+             action = HomeFragmentDirections.actionNavigationHomeToSurveillanceFragment();
+        }
+        Navigation.findNavController(view).navigate(action);
+    }
+
+    @Override
+    public void onSuccess(Response response) {
+        HomeResponse homeResponse = (HomeResponse)response.body();
+        if(homeResponse!= null) {
+            preferenceManager.ArmDevice(homeResponse.isArmed());
+            isArmed = homeResponse.isArmed();
+            contact_count.setText(String.valueOf(homeResponse.getContacts()));
+            alert_count.setText(String.valueOf(homeResponse.getBurglarAlerts()));
+        }
+    }
+
+    @Override
+    public void onError(String errorMessage) {
+    }
+
+    private void validateIP(String rtsp_address) {
+        RTSP rtsp = extractPortAndIP(rtsp_address);
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     Socket socket = new Socket();
-                    socket.connect(new InetSocketAddress(ipAddress, port), 1000);
+                    socket.connect(new InetSocketAddress(rtsp.getIpAddress(), rtsp.getPort()), 1000);
                     socket.close();
                     connectionStatus = true;
                 } catch (Exception ex) {
@@ -84,47 +132,30 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             t.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } finally {
-            setErrorMessage();
         }
     }
 
-    private void extractPortAndIP(){
-        if(cameraIP!=null) {
-            port = Integer.parseInt(cameraIP.substring(cameraIP.lastIndexOf(":") + 1, cameraIP.lastIndexOf("/")));
-            if (cameraIP.contains("@")) {
-                ipAddress = cameraIP.substring(cameraIP.indexOf("@")+1, cameraIP.lastIndexOf(":"));
-            } else {
-                ipAddress = cameraIP.substring(7, cameraIP.lastIndexOf(":"));
-            }
+    private RTSP extractPortAndIP(String rtspAddress) {
+        int port = -1;
+        String ipAddress = "";
+        port = Integer.parseInt(rtspAddress.substring(rtspAddress.lastIndexOf(":") + 1, rtspAddress.lastIndexOf("/")));
+        if (rtspAddress.contains("@")) {
+            ipAddress = rtspAddress.substring(rtspAddress.indexOf("@") + 1, rtspAddress.lastIndexOf(":"));
+        } else {
+            ipAddress = rtspAddress.substring(7, rtspAddress.lastIndexOf(":"));
         }
-
+        return new RTSP(ipAddress, port);
     }
 
-    private void setErrorMessage(){
-        viewLiveBtn.setEnabled(true);
-        if(cameraIP==null) {
-            camera_error.setText("You have not configured your IP camera to view surveillance. Please setup your device so we can help you");
-        }else if(!connectionStatus){
-            camera_error.setText("There was a problem with your connection please check if your device is connected to the network.");
+    private void setConnectionDetails(){
+        btnHomeSurveillance.setEnabled(true);
+        if(hasConnection && !connectionStatus){
+            home_connection_text.setText("Disconnected");
         }else{
-            camera_error.setVisibility(View.INVISIBLE);
-            connected.setImageResource(R.drawable.connected);
+            home_camera_txt.setText("View Surveillance");
+            home_connection_text.setText("Connected");
+            connected.setImageResource(R.drawable.circle);
         }
     }
 
-
-    @Override
-    public void onClick(View view) {
-        if(cameraIP== null){
-            Toasty.error(getContext(),"Please setup your device to view surveillance", Toasty.LENGTH_SHORT).show();
-        }
-        else if(!connectionStatus){
-            Toasty.error(getContext(),"An error occurred.Please check you camera settings.",Toasty.LENGTH_SHORT).show();
-        }
-        else{
-            NavDirections action = HomeFragmentDirections.actionNavigationHomeToSurveillanceFragment();
-            Navigation.findNavController(v).navigate(action);
-        }
-    }
 }

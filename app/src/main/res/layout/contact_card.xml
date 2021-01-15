@@ -75,7 +75,7 @@
             android:src="@drawable/edit"
             android:layout_above="@id/delete_contact"
             android:elevation="15dp"
-            android:backgroundTint="@color/greenLight"
+            android:backgroundTint="@color/blue"
             android:layout_alignParentEnd="true"/>
 
             <ImageButton

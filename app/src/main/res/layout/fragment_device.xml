@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_grey"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="15dp"
     tools:context=".Fragment.DeviceFragment">
@@ -10,7 +11,11 @@
     <RelativeLayout
         android:id="@+id/device_info"
         android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:elevation="5dp"
         android:layout_marginTop="15dp"
+        android:layout_centerInParent="true"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -141,7 +146,7 @@
         android:elevation="15dp"
         android:backgroundTint="@color/greenLight"
         android:text="Enable Burglar Detection"
-        android:textColor="@color/white" />
+        android:textColor="@color/dark" />
     </RelativeLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -152,7 +157,7 @@
         android:layout_margin="15dp"
         android:layout_alignParentEnd="true"
         android:textColor="@color/white"
-        android:backgroundTint="@color/blue"/>
+        android:backgroundTint="@color/darker_blue"/>
 
     <ImageView
         android:id="@+id/no_device_image"

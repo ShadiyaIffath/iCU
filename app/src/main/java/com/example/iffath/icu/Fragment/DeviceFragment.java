@@ -4,11 +4,11 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,21 +19,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.iffath.icu.Callback.ResponseCallback;
-import com.example.iffath.icu.DTO.Request.CameraRequest;
-import com.example.iffath.icu.DTO.Response.CameraResponse;
-import com.example.iffath.icu.DTO.Response.MessageResponse;
 import com.example.iffath.icu.Model.Camera;
 import com.example.iffath.icu.Model.RTSP;
 import com.example.iffath.icu.R;
 import com.example.iffath.icu.Service.CameraService;
 import com.example.iffath.icu.Storage.SharedPreferenceManager;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
 
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.ArrayList;
 
 import es.dmoral.toasty.Toasty;
 import retrofit2.Response;
@@ -131,7 +126,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
     }
 
     private void navigateToSetupFragment(){
-        NavDirections action = DeviceFragmentDirections.actionNavigationDevicesToDeviceSetupFragment();
+        NavDirections action = DeviceFragmentDirections.actionNavigationDevicesToDeviceSetupFragment(false);
         Navigation.findNavController(view).navigate(action);
     }
 
@@ -221,7 +216,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
             public void run() {
                 try {
                     Socket socket = new Socket();
-                    socket.connect(new InetSocketAddress(rtsp.getRtsp(), rtsp.getPort()), 1000);
+                    socket.connect(new InetSocketAddress(rtsp.getIpAddress(), rtsp.getPort()), 1000);
                     socket.close();
                     connectionStatus[0] = 1;
                 } catch (Exception ex) {

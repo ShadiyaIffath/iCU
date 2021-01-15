@@ -14,6 +14,12 @@
             app:destination="@id/surveillanceFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_navigation_home_to_deviceSetupFragment"
+            app:destination="@id/deviceSetupFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/navigation_home" />
     </fragment>
     <fragment
         android:id="@+id/surveillanceFragment"
@@ -64,7 +70,8 @@
             android:id="@+id/action_navigation_devices_to_deviceSetupFragment"
             app:destination="@id/deviceSetupFragment"
             app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/navigation_devices" />
     </fragment>
     <fragment
         android:id="@+id/navigation_notifications"
@@ -74,11 +81,22 @@
     <fragment
         android:id="@+id/deviceSetupFragment"
         android:name="com.example.iffath.icu.Fragment.DeviceSetupFragment"
+        android:label=""
         tools:layout="@layout/fragment_device_setup" >
         <action
             android:id="@+id/action_deviceSetupFragment_to_navigation_devices"
             app:destination="@id/navigation_devices"
             app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit" />
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popUpTo="@id/navigation_devices"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="isHome"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_deviceSetupFragment_to_navigation_home"
+            app:destination="@id/navigation_home"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="false" />
     </fragment>
 </navigation>

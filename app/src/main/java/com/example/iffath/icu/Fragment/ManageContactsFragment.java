@@ -135,7 +135,6 @@ public class ManageContactsFragment extends Fragment implements View.OnClickList
                 .centerCrop()
                 .into(no_contacts_image);
         no_contacts_text.setVisibility(View.VISIBLE);
-        Toasty.error(getContext(), "Server error. Try again later", Toast.LENGTH_SHORT).show();
     }
 
     private void createCallBacks(){

@@ -123,7 +123,6 @@ public class NotificationsFragment extends Fragment implements CustomItemClickLi
                 .fit()
                 .centerCrop()
                 .into(no_notification_image);
-        Toasty.error(getContext(), "Server error. Try again later", Toast.LENGTH_SHORT).show();
     }
 
     private void createCallBacks(){

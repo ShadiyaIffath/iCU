@@ -16,7 +16,7 @@
         android:transitionName="logo_image"
         android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/logo_transparent"/>
+        android:src="@drawable/splash"/>
 
     <TextView
         android:id="@+id/login_welcome"

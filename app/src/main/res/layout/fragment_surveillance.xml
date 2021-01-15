@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:padding="15dp"
     android:keepScreenOn="true"
-    android:background="@drawable/main_header_gradient"
     tools:context=".Fragment.SurveillanceFragment">
 
     <TextView
@@ -17,7 +16,7 @@
         android:fontFamily="@font/aref_ruqaa"
         android:text="Your IP Camera"
         android:textAlignment="center"
-        android:textColor="@color/white"
+        android:textColor="@color/dark"
         android:textSize="24sp" />
 
     <com.google.android.material.textfield.TextInputLayout
