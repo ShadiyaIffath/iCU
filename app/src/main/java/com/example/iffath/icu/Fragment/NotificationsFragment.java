@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -78,14 +80,15 @@ public class NotificationsFragment extends Fragment implements CustomItemClickLi
     public void onItemClick(View v, int position) {
         Notification notification = recyclerAdapter.getNotification(pos);
         switch (v.getId()){
-            case R.id.btnDelete_msg:
+            case R.id.btnRecording_msg:
                 pos = position;
-                notificationService.DeleteNotification(notification.getId(),deleteNotification);
+                NavDirections action = NotificationsFragmentDirections.actionNavigationNotificationsToFootageFragment(notification.getId());
+                Navigation.findNavController(view).navigate(action);
                 break;
 
             case R.id.notification_card:
                 pos = position;
-                displayMessage(notification);
+                notificationService.DeleteNotification(notification.getId(),deleteNotification);
                 break;
         }
     }

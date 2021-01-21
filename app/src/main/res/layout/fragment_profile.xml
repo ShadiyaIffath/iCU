@@ -4,13 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/profile_gradient"
+    android:background="@color/blue_primary"
     tools:context=".Fragment.ProfileFragment">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="210dp"
+        android:background="@drawable/half_rectangle"/>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical">
+
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -23,7 +30,7 @@
             android:layout_marginEnd="25dp"
             android:layout_marginBottom="10dp"
             android:scrollbars="vertical"
-            android:elevation="15dp">
+            app:cardElevation="15dp">
 
             <TextView
                 android:id="@+id/profile_title"
@@ -169,8 +176,7 @@
                 android:id="@+id/btnProfile"
                 android:clickable="true"
                 android:focusable="true"
-                android:text="@string/confirm"
-                app:cornerRadius="15dp"/>
+                android:text="@string/confirm" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_profile_delete"
@@ -184,7 +190,6 @@
                 android:text="@string/delete"
                 android:clickable="true"
                 android:focusable="true"
-                app:cornerRadius="15dp"
                 android:backgroundTint="@color/grey"/>
         </RelativeLayout>
 

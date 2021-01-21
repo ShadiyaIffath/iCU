@@ -5,11 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -55,18 +57,27 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         final Notification notification = notificationList.get(position);
         holder.msg_created.setText(getLocalDateTimeString(notification.getOccurred_on()));
         holder.msg_title.setText(notification.getTitle());
+        if(notification.getTitle().equals("Burglar Alert!"))
+            holder.btnRecording_msg.setVisibility(View.VISIBLE);
         setFadeAnimation(holder.itemView);
-        holder.btnDelete_msg.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.msg_cardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 listener.onItemClick(view, holder.getAdapterPosition());
                 return false;
             }
         });
+
+        holder.btnRecording_msg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClick(view,holder.getAdapterPosition());
+            }
+        });
         holder.msg_cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onItemClick(view,position);
+                displayMessage(notification);
             }
         });
     }
@@ -115,15 +126,42 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         return notificationList.get(position);
     }
 
+
+    private void displayMessage(Notification m){
+        final AlertDialog dialogBuilder = new AlertDialog.Builder(context).create();
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.msg_detail, null);
+
+        //hooks
+        TextView notification_title = dialogView.findViewById(R.id.notification_title);
+        TextView notification_message = dialogView.findViewById(R.id.notification_message);
+        TextView notification_date = dialogView.findViewById(R.id.notification_date);
+        Button ok = dialogView.findViewById(R.id.ok_msg);
+
+        //values
+        notification_title.setText(m.getTitle());
+        notification_date.setText(getLocalDateTimeString(m.getOccurred_on()));
+        notification_message.setText(m.getMessage());
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogBuilder.dismiss();
+            }
+        });
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.show();
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView msg_created,msg_title;
-        ImageButton btnDelete_msg;
+        ImageButton btnRecording_msg;
         CardView msg_cardView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             msg_title = itemView.findViewById(R.id.msg_title);
             msg_created = itemView.findViewById(R.id.msg_created);
-            btnDelete_msg = itemView.findViewById(R.id.btnDelete_msg);
+            btnRecording_msg = itemView.findViewById(R.id.btnRecording_msg);
             msg_cardView = itemView.findViewById(R.id.notification_card);
         }
     }

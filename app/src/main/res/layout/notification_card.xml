@@ -23,7 +23,7 @@
             android:layout_below="@id/msg_title"
             android:layout_marginTop="10dp"
             android:text="2020-04-05"
-            android:textColor="@color/dark"
+            android:textColor="@color/grey"
             android:textSize="14sp"
             android:textStyle="italic" />
 
@@ -32,20 +32,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/aladin"
-            android:textColor="@color/light_blue"
+            android:textColor="@color/blue_primary"
             android:text="Burglar Alert"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <ImageButton
-            android:id="@+id/btnDelete_msg"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:id="@+id/btnRecording_msg"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="7dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:elevation="5dp"
+            android:visibility="invisible"
+            android:elevation="15dp"
             android:backgroundTint="@color/white"
-            android:src="@drawable/trash" />
+            android:src="@drawable/recording" />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

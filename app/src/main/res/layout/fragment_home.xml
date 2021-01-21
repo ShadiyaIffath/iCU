@@ -89,7 +89,7 @@
         android:id="@+id/home_alert_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="15dp"
+        app:cardElevation="15dp"
         android:layout_weight="1">
 
         <RelativeLayout
@@ -126,7 +126,7 @@
                 android:textColor="@color/grey"
                 android:gravity="center"
                 android:layout_marginBottom="25dp"
-                android:text="0"
+                android:text="-"
                 android:textSize="45sp"
                 android:textStyle="bold" />
 
@@ -139,7 +139,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="15dp"
         android:layout_weight="1"
-        android:elevation="15dp">
+        app:cardElevation="15dp">
 
 
         <RelativeLayout
@@ -176,7 +176,7 @@
                 android:layout_marginStart="40dp"
                 android:textColor="@color/grey"
                 android:layout_marginBottom="25dp"
-                android:text="0"
+                android:text="-"
                 android:textSize="45sp"
                 android:textStyle="bold" />
         </RelativeLayout>
