@@ -134,8 +134,8 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
         if(testConnection(camera.getRtsp_address())==1){
             device_connectivity.setImageResource(R.drawable.connected);
             isConnected = true;
-            if(camera.isArmed()){
-                btnDeviceArm.setVisibility(View.INVISIBLE);
+            if(!camera.isArmed()){
+                btnDeviceArm.setVisibility(View.VISIBLE);
             }
         }else{
             isConnected = false;

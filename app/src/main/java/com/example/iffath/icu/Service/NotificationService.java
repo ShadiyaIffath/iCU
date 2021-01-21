@@ -5,12 +5,14 @@ import android.content.Context;
 import com.example.iffath.icu.Callback.CustomizeCallback;
 import com.example.iffath.icu.Callback.ResponseCallback;
 import com.example.iffath.icu.Client.RetrofitClient;
+import com.example.iffath.icu.DTO.Request.FootageRequest;
 import com.example.iffath.icu.DTO.Response.MessageResponse;
 import com.example.iffath.icu.Model.Notification;
 import com.example.iffath.icu.Service.Interface.INotificationService;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class NotificationService {
@@ -30,5 +32,10 @@ public class NotificationService {
     public void GetAllNotifications(int accountId, ResponseCallback responseCallback){
         Call<List<Notification>> call = INotificationService.GetAccountMessages(accountId);
         call.enqueue(new CustomizeCallback<List<Notification>>(responseCallback,mContext));
+    }
+
+    public void GetFootageStream(FootageRequest request, ResponseCallback callback){
+        Call<ResponseBody> call = INotificationService.GetBurglarFootage(request);
+        call.enqueue(new CustomizeCallback<ResponseBody>(callback,mContext));
     }
 }
