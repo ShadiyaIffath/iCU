@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Resp
     @Override
     public void onClick(View view) {
         NavDirections action;
-        if(hasConnection && !connectionStatus){
+        if((hasConnection && !connectionStatus) || (!hasConnection && !connectionStatus)){
             action = HomeFragmentDirections.actionNavigationHomeToDeviceSetupFragment(true);
         }
         else{
@@ -149,9 +149,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Resp
 
     private void setConnectionDetails(){
         btnHomeSurveillance.setEnabled(true);
-        if(hasConnection && !connectionStatus){
+        if((hasConnection && !connectionStatus) || (!hasConnection && !connectionStatus)){
             home_connection_text.setText("Disconnected");
-        }else{
+        }
+        else{
             home_camera_txt.setText("View Surveillance");
             home_connection_text.setText("Connected");
             connected.setImageResource(R.drawable.circle);
