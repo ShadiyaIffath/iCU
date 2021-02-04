@@ -18,29 +18,25 @@ public class RegisterForPushNotificationsAsync extends AsyncTask<Void, Void, Obj
     final String TAG = "PUSHY";
 
     AccountService accountService;
-    ResponseCallback responseCallback;
+    ResponseCallback pushyTokenCallback;
     SharedPreferenceManager preferenceManager;
     int accountId;
     String deviceToken;
 
-    public RegisterForPushNotificationsAsync(Activity activity,int accountId) {
-        this.accountId = accountId;
+    public RegisterForPushNotificationsAsync(Activity activity, int accountId) {
         this.mActivity = activity;
+        this.accountId = accountId;
+        preferenceManager = SharedPreferenceManager.getInstance(activity.getApplicationContext());
+        accountService = new AccountService(activity.getApplicationContext());
     }
 
     protected Object doInBackground(Void... params) {
         try {
             // Register the device for notifications
-            deviceToken = Pushy.register(mActivity.getApplicationContext());
-
+            String deviceToken = Pushy.register(mActivity.getApplicationContext());
             // Registration succeeded, log token to logcat
             Log.d(TAG, "Pushy device token: " + deviceToken);
-
-            preferenceManager = SharedPreferenceManager.getInstance(mActivity.getApplicationContext());
-            accountService = new AccountService(mActivity.getApplicationContext());
             createCallback();
-
-            accountService.RegisterDevice(new PushyRegisterIdRequest(accountId,deviceToken),responseCallback);
             return deviceToken;
         }
         catch (Exception exc) {
@@ -48,17 +44,32 @@ public class RegisterForPushNotificationsAsync extends AsyncTask<Void, Void, Obj
         }
     }
 
+    @Override
+    protected void onPostExecute(Object result) {
+        // Registration failed?
+        if (result instanceof Exception) {
+            // Log to console
+            Log.e("Pushy", result.toString());
+        }
+        else {
+           deviceToken =  result.toString();
+           accountService.RegisterDevice(new PushyRegisterIdRequest(accountId, deviceToken),pushyTokenCallback);
+        }
+    }
+
     private void createCallback(){
-        responseCallback = new ResponseCallback() {
+        pushyTokenCallback = new ResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 preferenceManager.StorePushNotificationToken(deviceToken);
+                Log.d("PUSHY","Device token saved");
             }
 
             @Override
             public void onError(String errorMessage) {
-                Log.e(TAG,errorMessage);
+                Log.e("PUSHY",errorMessage);
             }
         };
     }
+
 }

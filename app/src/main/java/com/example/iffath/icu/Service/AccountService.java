@@ -35,7 +35,7 @@ public class AccountService {
 
     public void RegisterDevice(PushyRegisterIdRequest pushyRequest, ResponseCallback responseCallback){
         Call<MessageResponse> responseCall = this.IAccountService.RegisterDevice(pushyRequest);
-        responseCall.enqueue(new CustomizeCallback<MessageResponse>(responseCallback,mContext));
+        responseCall.enqueue(new HomeCallback<MessageResponse>(responseCallback));
     }
 
     public void HomeDetails(int accountId, ResponseCallback responseCallback){
