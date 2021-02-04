@@ -107,7 +107,7 @@ public class DeviceSetupFragment extends Fragment implements View.OnClickListene
         updateCameraCallback = new ResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                Toasty.success(getContext(), "Your IP device has been successfully updated", Toasty.LENGTH_SHORT).show();
+                Toasty.success(getContext(), "Your device is successfully updated", Toasty.LENGTH_SHORT).show();
                 preferenceManager.UpdateDeviceDetails(cameraRequest);
                 navigateBack();
             }
@@ -125,7 +125,7 @@ public class DeviceSetupFragment extends Fragment implements View.OnClickListene
             public void onSuccess(Response response) {
                 Camera cameraResponse = (Camera) response.body();
                 preferenceManager.StoreDeviceDetails(cameraResponse);
-                Toasty.success(getContext(), "Your IP device has been successfully setup", Toasty.LENGTH_SHORT).show();
+                Toasty.success(getContext(), "Your device is successfully setup", Toasty.LENGTH_SHORT).show();
                 navigateBack();
             }
 
