@@ -3,29 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_grey"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     android:padding="15dp"
     tools:context=".Fragment.DeviceFragment">
 
-    <RelativeLayout
-        android:id="@+id/device_info"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:elevation="5dp"
-        android:layout_marginTop="15dp"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_above="@id/device_info"
+        android:id="@+id/device_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:transitionName="logo_image"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/splash"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="25dp"
         android:layout_centerInParent="true"
-        android:background="@color/white"
+        android:id="@+id/device_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        app:cardCornerRadius="5dp"
+        android:backgroundTint="@color/lightest_blue"
+        android:elevation="15dp">
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/device_image"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:transitionName="logo_image"
-            android:layout_marginTop="20dp"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/splash"/>
     <TextView
         android:id="@+id/device_user"
         android:layout_width="wrap_content"
@@ -33,7 +39,6 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="25dp"
         android:fontFamily="@font/aladin"
-        android:layout_below="@+id/device_image"
         android:text="Your device:"
         android:textColor="@color/black"
         android:textSize="38sp" />
@@ -141,12 +146,13 @@
         android:layout_marginTop="45dp"
         android:layout_below="@id/btnDeleteDevice"
         android:layout_centerHorizontal="true"
-        android:visibility="invisible"
+        android:layout_marginBottom="15dp"
         android:elevation="15dp"
-        android:backgroundTint="@color/greenLight"
+        android:backgroundTint="@color/blue_primary"
         android:text="Enable Burglar Detection"
-        android:textColor="@color/dark" />
+        android:textColor="@color/white" />
     </RelativeLayout>
+</androidx.cardview.widget.CardView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_add_device"

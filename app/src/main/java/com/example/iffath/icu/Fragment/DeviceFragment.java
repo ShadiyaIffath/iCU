@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
@@ -38,7 +39,8 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
     ImageButton btnDeleteDevice, btnDeviceEdit;
     TextView device_model_title, device_model_txt, device_rtsp_title, device_rtsp_txt, device_armed_title, device_armed_txt,no_device_text;
     ImageView device_connectivity,no_device_image;
-    RelativeLayout layout;
+    CardView layout;
+    AppCompatImageView device_image;
     View view;
 
     int accountId;
@@ -66,6 +68,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
         createCallbacks();
         //hooks
         layout = view.findViewById(R.id.device_info);
+        device_image = view.findViewById(R.id.device_image);
 
         btnDeleteDevice = view.findViewById(R.id.btnDeleteDevice);
         btnDeviceArm = view.findViewById(R.id.btnDeviceArm);
@@ -258,6 +261,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
     private void toggleVisibility(boolean edit){
         if(edit){
             layout.setVisibility(View.VISIBLE);
+            device_image.setVisibility(View.VISIBLE);
             btn_add_device.setVisibility(View.INVISIBLE);
             no_device_image.setVisibility(View.INVISIBLE);
             no_device_text.setVisibility(View.INVISIBLE);
@@ -266,6 +270,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
             }
         }else{
             layout.setVisibility(View.INVISIBLE);
+            device_image.setVisibility(View.INVISIBLE);
             Picasso.get()
                     .load(no_device)
                     .fit()
