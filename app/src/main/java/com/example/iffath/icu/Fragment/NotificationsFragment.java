@@ -78,16 +78,15 @@ public class NotificationsFragment extends Fragment implements CustomItemClickLi
 
     @Override
     public void onItemClick(View v, int position) {
+        pos = position;
         Notification notification = recyclerAdapter.getNotification(pos);
         switch (v.getId()){
             case R.id.btnRecording_msg:
-                pos = position;
                 NavDirections action = NotificationsFragmentDirections.actionNavigationNotificationsToFootageFragment(notification.getId());
                 Navigation.findNavController(view).navigate(action);
                 break;
 
             case R.id.notification_card:
-                pos = position;
                 notificationService.DeleteNotification(notification.getId(),deleteNotification);
                 break;
         }
@@ -143,29 +142,4 @@ public class NotificationsFragment extends Fragment implements CustomItemClickLi
         };
     }
 
-    private void displayMessage(Notification m){
-        final AlertDialog dialogBuilder = new AlertDialog.Builder(this.getContext()).create();
-        LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.msg_detail, null);
-
-        //hooks
-        TextView notification_title = dialogView.findViewById(R.id.notification_title);
-        TextView notification_message = dialogView.findViewById(R.id.notification_message);
-        TextView notification_date = dialogView.findViewById(R.id.notification_date);
-        Button ok = dialogView.findViewById(R.id.ok_msg);
-
-        //values
-        notification_title.setText(m.getTitle());
-        notification_date.setText(recyclerAdapter.getLocalDateTimeString(m.getOccurred_on()));
-        notification_message.setText(m.getMessage());
-
-        ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialogBuilder.dismiss();
-            }
-        });
-        dialogBuilder.setView(dialogView);
-        dialogBuilder.show();
-    }
 }

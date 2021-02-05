@@ -54,7 +54,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Notification notification = notificationList.get(position);
+        final Notification notification = notificationList.get(holder.getAdapterPosition());
         holder.msg_created.setText(getLocalDateTimeString(notification.getOccurred_on()));
         holder.msg_title.setText(notification.getTitle());
         if(notification.getTitle().equals("Burglar Alert!"))
@@ -119,7 +119,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public void removeItem(int position){
         this.notificationList.remove(position);
-        notifyItemRemoved(position);
+        notifyDataSetChanged();
     }
 
     public Notification getNotification(int position){
