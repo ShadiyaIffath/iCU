@@ -3,6 +3,7 @@ package com.example.iffath.icu.Service;
 import android.content.Context;
 
 import com.example.iffath.icu.Callback.CustomizeCallback;
+import com.example.iffath.icu.Callback.HomeCallback;
 import com.example.iffath.icu.Callback.ResponseCallback;
 import com.example.iffath.icu.Client.RetrofitClient;
 import com.example.iffath.icu.DTO.Request.AccountUpdateRequest;
@@ -40,5 +41,10 @@ public class CameraService {
     public void ArmCamera(int accountId,ResponseCallback responseCallback){
         Call<MessageResponse> responseCall = this.ICameraService.ArmCamera(accountId);
         responseCall.enqueue(new CustomizeCallback<MessageResponse>(responseCallback,mContext));
+    }
+
+    public void GetCamera(int deviceId, ResponseCallback responseCallback){
+        Call<Camera> responseCall = this.ICameraService.GetDevice(deviceId);
+        responseCall.enqueue(new HomeCallback<Camera>(responseCallback));
     }
 }

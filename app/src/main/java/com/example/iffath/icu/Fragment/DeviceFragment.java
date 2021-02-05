@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
     CameraService cameraService;
     Camera camera;
     SharedPreferenceManager preferenceManager;
-    ResponseCallback deleteCameraCallback,armDeviceCallback;
+    ResponseCallback deleteCameraCallback,armDeviceCallback,getDeviceCallback;
 
     public DeviceFragment() {
         // Required empty public constructor
@@ -88,8 +89,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
 
         if(hasConnection) {
             loadCameraDetails();
-            setDevice_connectivity();
-            toggleVisibility(true);
+            cameraService.GetCamera(camera.getId(), getDeviceCallback);
         }else{
             toggleVisibility(false);
         }
@@ -150,7 +150,6 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
         deleteCameraCallback = new ResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                Toasty.success(getContext(),"Your IP camera has been successfully removed", Toasty.LENGTH_SHORT).show();
                 preferenceManager.clearDeviceSettings();
 
                 device_armed_txt.setText("");
@@ -181,6 +180,23 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onError(String errorMessage) {
                 Toasty.error(getContext(), "Server error. Try again later", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        getDeviceCallback = new ResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                Camera device = (Camera)response.body();
+                preferenceManager.StoreDeviceDetails(device);
+                loadCameraDetails();
+                setDevice_connectivity();
+                toggleVisibility(true);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("ERROR", errorMessage);
+                toggleVisibility(false);
             }
         };
     }
