@@ -162,6 +162,7 @@
         android:layout_margin="15dp"
         android:layout_alignParentEnd="true"
         android:textColor="@color/white"
+        android:visibility="invisible"
         android:backgroundTint="@color/darker_blue"/>
 
     <ImageView
