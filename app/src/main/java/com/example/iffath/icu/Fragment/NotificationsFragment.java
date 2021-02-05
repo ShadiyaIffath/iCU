@@ -96,15 +96,7 @@ public class NotificationsFragment extends Fragment implements CustomItemClickLi
     public void onSuccess(Response response) {
         notifications = (List<Notification>)response.body();
         if(notifications.size() == 0){
-            recyclerView.setVisibility(View.INVISIBLE);
-            no_notification_image.setVisibility(View.VISIBLE);
-            Picasso.get()
-                    .load(no_notification)
-                    .fit()
-                    .centerCrop()
-                    .into(no_notification_image);
-            no_notification_text.setVisibility(View.VISIBLE);
-            Toasty.info(getContext(), "You have 0 Notifications", Toasty.LENGTH_SHORT).show();
+            noNotificationsLayout();
         }
         else {
             recyclerAdapter = new NotificationAdapter(getContext(), this);
@@ -132,7 +124,9 @@ public class NotificationsFragment extends Fragment implements CustomItemClickLi
             @Override
             public void onSuccess(Response response) {
                 recyclerAdapter.removeItem(pos);
-                Toasty.success(getContext(),"Notification successfully deleted",Toasty.LENGTH_SHORT).show();
+                if(recyclerAdapter.getItemCount()==0){
+                    noNotificationsLayout();
+                }
             }
 
             @Override
@@ -140,6 +134,17 @@ public class NotificationsFragment extends Fragment implements CustomItemClickLi
                 Toasty.error(getContext(), "Server error. Try again later", Toast.LENGTH_SHORT).show();
             }
         };
+    }
+
+    private void noNotificationsLayout(){
+        recyclerView.setVisibility(View.INVISIBLE);
+        no_notification_image.setVisibility(View.VISIBLE);
+        Picasso.get()
+                .load(no_notification)
+                .fit()
+                .centerCrop()
+                .into(no_notification_image);
+        no_notification_text.setVisibility(View.VISIBLE);
     }
 
 }

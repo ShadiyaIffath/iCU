@@ -107,15 +107,7 @@ public class ManageContactsFragment extends Fragment implements View.OnClickList
         String title = "#"+ size+ " emergency contacts";
         contacts_title.setText(title);
         if(contacts.size() == 0){
-            recyclerView.setVisibility(View.INVISIBLE);
-            no_contacts_image.setVisibility(View.VISIBLE);
-            Picasso.get()
-                    .load(no_contacts)
-                    .fit()
-                    .centerCrop()
-                    .into(no_contacts_image);
-            no_contacts_text.setVisibility(View.INVISIBLE);
-            Toasty.info(getContext(), "0 emergency contacts", Toasty.LENGTH_SHORT).show();
+            noContactsLayout();
         }else {
             recyclerAdapter = new EmergencyContactAdapter(getContext(), this);
             recyclerAdapter.setAllData(contacts);
@@ -147,7 +139,9 @@ public class ManageContactsFragment extends Fragment implements View.OnClickList
                 size--;
                 String title = "#"+ size+ " emergency contacts";
                 contacts_title.setText(title);
-                Toasty.success(getContext(),"Contact successfully deleted",Toasty.LENGTH_SHORT).show();
+                if(recyclerAdapter.getItemCount() == 0){
+                    noContactsLayout();
+                }
             }
 
             @Override
@@ -159,5 +153,16 @@ public class ManageContactsFragment extends Fragment implements View.OnClickList
 
     private void dialNumber(final String contactNumber) { //method which is used to create an intent service to make the call
         startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", contactNumber, null)));
+    }
+
+    private void noContactsLayout(){
+        recyclerView.setVisibility(View.INVISIBLE);
+        no_contacts_image.setVisibility(View.VISIBLE);
+        Picasso.get()
+                .load(no_contacts)
+                .fit()
+                .centerCrop()
+                .into(no_contacts_image);
+        no_contacts_text.setVisibility(View.INVISIBLE);
     }
 }
