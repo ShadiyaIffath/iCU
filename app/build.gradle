@@ -3,6 +3,7 @@ plugins {
 }
 
 apply plugin: "androidx.navigation.safeargs"
+apply plugin: "com.google.gms.google-services"
 
 android {
     compileSdkVersion 29
@@ -30,6 +31,7 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.core:core:1.5.0-alpha04'
     implementation "org.videolan.android:libvlc-all:3.1.12"
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
@@ -49,7 +51,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation "com.squareup.okhttp3:logging-interceptor:3.12.1"
 
-    implementation 'me.pushy:sdk:1.0.66'
+    implementation platform('com.google.firebase:firebase-bom:26.4.0')
+    implementation 'com.google.firebase:firebase-messaging'
 
     implementation 'com.github.GrenderG:Toasty:1.5.0'
     implementation 'com.squareup.picasso:picasso:2.71828'

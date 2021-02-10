@@ -1,11 +1,13 @@
 package com.example.iffath.icu.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,25 +17,33 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.iffath.icu.Callback.ResponseCallback;
+import com.example.iffath.icu.DTO.Request.FirebaseRegisterIdRequest;
 import com.example.iffath.icu.R;
-import com.example.iffath.icu.Service.RegisterForPushNotificationsAsync;
+import com.example.iffath.icu.Service.AccountService;
 import com.example.iffath.icu.Storage.SharedPreferenceManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
-import me.pushy.sdk.Pushy;
+import retrofit2.Response;
 
 public class SplashActivity extends AppCompatActivity {
     private static int SPLASH_DURATION = 3000;
+    private final String TAG = "SPLASH";
     Animation topAnime, bottomAnime;
     ImageView splash;
     TextView logo, slogan;
     Intent intent;
 
+    AccountService accountService;
+    ResponseCallback deviceTokenCallback;
     SharedPreferenceManager preferenceManager;
+    String deviceToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Pushy.listen(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
 
@@ -54,9 +64,21 @@ public class SplashActivity extends AppCompatActivity {
         preferenceManager = SharedPreferenceManager.getInstance( this);
         boolean isLogged = preferenceManager.IsLoggedIn();
         if (isLogged) {
-            if (!preferenceManager.IsPushNotificationRegistered()) {
-                new RegisterForPushNotificationsAsync(this,preferenceManager.GetLoggedInUserId()).execute();
-            }
+            accountService = new AccountService(getApplicationContext());
+            createCallback();
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(new OnCompleteListener<String>() {
+                        @Override
+                        public void onComplete(@NonNull Task<String> task) {
+                            if (!task.isSuccessful()) {
+                                Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                                return;
+                            }
+                            // Get new FCM registration token
+                            deviceToken = task.getResult();
+                            accountService.RegisterDevice(new FirebaseRegisterIdRequest(preferenceManager.GetLoggedInUserId(), deviceToken), deviceTokenCallback);
+                        }
+                    });
             navigateToHome();
         }else{
             navigateToLogin();
@@ -93,5 +115,20 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }, SPLASH_DURATION);
+    }
+
+    private void createCallback(){
+        deviceTokenCallback = new ResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                preferenceManager.StorePushNotificationToken(deviceToken);
+                Log.d(TAG,"Device token saved");
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e(TAG,errorMessage);
+            }
+        };
     }
 }

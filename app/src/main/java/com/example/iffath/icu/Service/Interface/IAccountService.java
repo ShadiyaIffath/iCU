@@ -1,7 +1,7 @@
 package com.example.iffath.icu.Service.Interface;
 
 import com.example.iffath.icu.DTO.Request.AccountUpdateRequest;
-import com.example.iffath.icu.DTO.Request.PushyRegisterIdRequest;
+import com.example.iffath.icu.DTO.Request.FirebaseRegisterIdRequest;
 import com.example.iffath.icu.DTO.Response.HomeResponse;
 import com.example.iffath.icu.DTO.Response.MessageResponse;
 
@@ -21,7 +21,7 @@ public interface IAccountService {
     Call<MessageResponse> DeleteAccount(@Path("accountId") int id);
 
     @POST("account/register-device")
-    Call<MessageResponse> RegisterDevice(@Body PushyRegisterIdRequest pushyRequest);
+    Call<MessageResponse> RegisterDevice(@Body FirebaseRegisterIdRequest pushyRequest);
 
     @GET("account/home-details/{accountId}")
     Call<HomeResponse> GetHomeDetails(@Path("accountId") int id);

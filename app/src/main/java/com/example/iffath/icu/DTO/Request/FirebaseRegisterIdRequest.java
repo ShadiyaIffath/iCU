@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PushyRegisterIdRequest {
+public class FirebaseRegisterIdRequest {
     private int accountId;
     private String deviceId;
 }

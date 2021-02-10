@@ -7,7 +7,7 @@ import com.example.iffath.icu.Callback.HomeCallback;
 import com.example.iffath.icu.Callback.ResponseCallback;
 import com.example.iffath.icu.Client.RetrofitClient;
 import com.example.iffath.icu.DTO.Request.AccountUpdateRequest;
-import com.example.iffath.icu.DTO.Request.PushyRegisterIdRequest;
+import com.example.iffath.icu.DTO.Request.FirebaseRegisterIdRequest;
 import com.example.iffath.icu.DTO.Response.HomeResponse;
 import com.example.iffath.icu.DTO.Response.MessageResponse;
 import com.example.iffath.icu.Service.Interface.IAccountService;
@@ -33,7 +33,7 @@ public class AccountService {
         responseCall.enqueue(new CustomizeCallback<MessageResponse>(responseCallback,mContext));
     }
 
-    public void RegisterDevice(PushyRegisterIdRequest pushyRequest, ResponseCallback responseCallback){
+    public void RegisterDevice(FirebaseRegisterIdRequest pushyRequest, ResponseCallback responseCallback){
         Call<MessageResponse> responseCall = this.IAccountService.RegisterDevice(pushyRequest);
         responseCall.enqueue(new HomeCallback<MessageResponse>(responseCallback));
     }

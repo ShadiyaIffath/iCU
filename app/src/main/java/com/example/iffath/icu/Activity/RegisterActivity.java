@@ -1,11 +1,13 @@
 package com.example.iffath.icu.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,33 +18,37 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.iffath.icu.Callback.ResponseCallback;
+import com.example.iffath.icu.DTO.Request.FirebaseRegisterIdRequest;
 import com.example.iffath.icu.DTO.Request.RegisterRequest;
-import com.example.iffath.icu.DTO.Response.LoginResponse;
 import com.example.iffath.icu.DTO.Response.RegisterResponse;
-import com.example.iffath.icu.Model.Account;
 import com.example.iffath.icu.R;
+import com.example.iffath.icu.Service.AccountService;
 import com.example.iffath.icu.Service.AuthenticationService;
-import com.example.iffath.icu.Service.RegisterForPushNotificationsAsync;
 import com.example.iffath.icu.Storage.SharedPreferenceManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import es.dmoral.toasty.Toasty;
-import me.pushy.sdk.Pushy;
 import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, ResponseCallback {
+    private final String TAG = "REGISTER";
     TextInputLayout firstName,lastName,email,passTxt,addressTxt, numberTxt;
     ImageView splash;
     TextView logo, slogan;
     Button callSignIn, register;
 
     RegisterRequest account;
+    String deviceToken;
+    ResponseCallback deviceTokenCallback;
     SharedPreferenceManager preferenceManager;
     AuthenticationService authenticationService;
+    AccountService accountService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Pushy.listen(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_register);
 
@@ -83,8 +89,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         RegisterResponse registerResponse = (RegisterResponse) response.body();
         if(registerResponse != null) {
             storeRegisteredUser(registerResponse);
+            registerDeviceToken();
             navigateToHome(registerResponse.getFirst_name(),registerResponse.getLast_name());
-            new RegisterForPushNotificationsAsync(this, registerResponse.getId()).execute();
         }
     }
 
@@ -172,6 +178,39 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void storeRegisteredUser(RegisterResponse response){
         preferenceManager = SharedPreferenceManager.getInstance(this);
         preferenceManager.StoreRegisteredAccountDetails(response);
+    }
+
+    private void createCallback(){
+        deviceTokenCallback = new ResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                preferenceManager.StorePushNotificationToken(deviceToken);
+                Log.d(TAG,"Device token saved");
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e(TAG,errorMessage);
+            }
+        };
+    }
+
+    private void registerDeviceToken(){
+        createCallback();
+        accountService = new AccountService(this);
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+                        // Get new FCM registration token
+                        deviceToken = task.getResult();
+                        accountService.RegisterDevice(new FirebaseRegisterIdRequest(preferenceManager.GetLoggedInUserId(), deviceToken), deviceTokenCallback);
+                    }
+                });
     }
 
 }

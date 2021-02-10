@@ -1,11 +1,13 @@
 package com.example.iffath.icu.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
@@ -17,18 +19,22 @@ import android.widget.Toast;
 
 import com.example.iffath.icu.Callback.ResponseCallback;
 import com.example.iffath.icu.DTO.Request.LoginRequest;
+import com.example.iffath.icu.DTO.Request.FirebaseRegisterIdRequest;
 import com.example.iffath.icu.DTO.Response.LoginResponse;
 import com.example.iffath.icu.R;
+import com.example.iffath.icu.Service.AccountService;
 import com.example.iffath.icu.Service.AuthenticationService;
-import com.example.iffath.icu.Service.RegisterForPushNotificationsAsync;
 import com.example.iffath.icu.Storage.SharedPreferenceManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import es.dmoral.toasty.Toasty;
-import me.pushy.sdk.Pushy;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, ResponseCallback {
+    private final String TAG = "LOGIN";
     TextInputLayout email,password;
     ImageView splash;
     TextView logo, slogan;
@@ -36,10 +42,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     AuthenticationService authenticationService;
     SharedPreferenceManager preferenceManager;
+    AccountService accountService;
+    String deviceToken;
+    ResponseCallback deviceTokenCallback;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Pushy.listen(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
         authenticationService = new AuthenticationService(this);
@@ -150,8 +159,39 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if(response.getCamera() != null){
             preferenceManager.StoreDeviceDetails(response.getCamera());
         }
-        if (!preferenceManager.IsPushNotificationRegistered()) {
-            new RegisterForPushNotificationsAsync(this,response.getAccount().getId()).execute();
-        }
+        registerDeviceToken();
+    }
+
+    private void registerDeviceToken(){
+        createCallback();
+        accountService = new AccountService(this);
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+                        // Get new FCM registration token
+                        deviceToken = task.getResult();
+                        accountService.RegisterDevice(new FirebaseRegisterIdRequest(preferenceManager.GetLoggedInUserId(), deviceToken), deviceTokenCallback);
+                    }
+                });
+    }
+
+    private void createCallback(){
+        deviceTokenCallback = new ResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                preferenceManager.StorePushNotificationToken(deviceToken);
+                Log.d(TAG,"Device token saved");
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e(TAG,errorMessage);
+            }
+        };
     }
 }
