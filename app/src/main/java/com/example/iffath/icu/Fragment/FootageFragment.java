@@ -44,11 +44,9 @@ public class FootageFragment extends Fragment  implements IVLCVout.Callback{
 
     View view;
 
-    private static FootageFragment sInstance;
     private LibVLC mLibVlc;
     private SurfaceView mVideoSurface = null;
     private IVLCVout vlcVout;
-    private FrameLayout sdk;
     private MediaPlayer mMediaPlayer = null;
     private Media media;
 
@@ -64,13 +62,8 @@ public class FootageFragment extends Fragment  implements IVLCVout.Callback{
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_footage, container, false);
         preferenceManager = SharedPreferenceManager.getInstance(getContext());
-        sInstance = this;
 
-//        getActivity().getActionBar().hide();
         getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-//        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
         mVideoSurface = view.findViewById(R.id.video_surface);
 
         ArrayList<String> args = new ArrayList<>();
@@ -78,8 +71,6 @@ public class FootageFragment extends Fragment  implements IVLCVout.Callback{
         mLibVlc = new LibVLC(getContext(), args);
         mMediaPlayer = new MediaPlayer(mLibVlc);
         vlcVout = mMediaPlayer.getVLCVout();
-        sdk = view.findViewById(R.id.video_surface_frame);
-
         setup_url();
 
         controller = new MediaController(getContext());
@@ -99,7 +90,6 @@ public class FootageFragment extends Fragment  implements IVLCVout.Callback{
         mMediaPlayer.stop();
         mMediaPlayer.release();
         mLibVlc.release();
-//        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     public void setup_url()
@@ -135,13 +125,9 @@ public class FootageFragment extends Fragment  implements IVLCVout.Callback{
                             Toasty.info(getContext(),"Error encountered", Toasty.LENGTH_SHORT).show();
                             break;
                         case Buffering:
-//                            progressDialog.setMessage("Loading video please wait!");
-//                            progressDialog.show();
                             break;
                         case Playing:
-
                         case Opening:
-
                         case Stopped:
                             progressDialog.dismiss();
                             break;
